@@ -83,7 +83,7 @@
           <a class="brand" href="#">Pedro Moreira Santos</a>
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#" data_controls_modal="about" data-backdrop="static">About</a></li>
+            <li><a href="#" data_controls_modal="About-modal" data-backdrop="static">About</a></li>
             <li><a href="#">Contact</a></li>
           </ul>
         </div>
@@ -116,30 +116,52 @@
 
     </div> <!-- /container -->
 
-    <pre class="prettyprint linenums">
-$('#about').bind('hidden', function () {
-  // do something ...
-})</pre>
-          <h3>About me</h3>
-          <!-- sample modal content -->
-          <div id="about" class="modal hide fade">
-            <div class="modal-header">
-              <a href="#" class="close">&times;</a>
-              <h3>Modal Heading</h3>
-            </div>
-            <div class="modal-body">
-              <p>One fine body…</p>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn primary">Primary</a>
-              <a href="#" class="btn secondary">Secondary</a>
-            </div>
-          </div>
-
-          <button data-controls-modal="modal-from-dom" data-backdrop="true" data-keyboard="true" class="btn danger">Launch Modal</button>
-        </div>
+    <div id="About-modal" class="modal" style="position: relative; top: auto; left: auto; margin: 0 auto; z-index: 1">
+      <div class="modal-header">
+        <h3>About me</h3>
+        <a href="#" class="close">&amp;times;</a>
       </div>
-    </section>
+      <div class="modal-body">
+        <p>
+          An accomplished software developer with over fifteen years experience in the software industry. Passionate about the web, distributed systems and mobile technology. Advocate of agile practices and the software craftsmanship movement. Flexible, highly motivated, over deliverer. Active member of several developer groups such as NSCoders and Agile Barcelona. Frequent speaker on subjects such as: agile development and mobile solutions. Keen to find ways to develop software more effectively, encouraging greater interaction with clients. 
+          </p>
+          <p>
+          Creator of LetsBasket+, LetsBasket HD and LetsBasket (IOS apps)
+          </p>
+          <p>
+          Speaks 3 languages Portuguese, Spanish and English. Additionaly understands, reads and has basic conversation skills in French, Catalan and Italian.
+          </p>
+          <h4>Specialties</h4>
+          <ul>
+            <ul>Agile and practices</ul>
+              <li>Object orient design and development</li>
+              <li>Design Patterns</li>
+              <li>C#/.NET
+              <li>C/C++, Objective-C/Cocoa
+              <li>Ruby
+              <li>NHibernate, Entity Framework
+              <li>TDD, DDD, BDD
+              <li>SOLID principles
+              <li>Windsor Container, Unity
+            </ul>
+            <ul>Tools and frameworks
+              <li>MySQL, SQLServer, MongoDb 
+              <li>Visual Studio 
+              <li>Xcode
+              <li>Subversion, GIT, Mercurial, TFS
+              <li>NAnt, NUnit, NCover, CruiseControl, Jenkins, Cucumber, OCUnit, Kiwi
+            </ul>  
+            <ul>Operating Systems</ul>
+              <li>MacOS, IOS, MS-Windows, Linux
+            </ul>
+          </ul>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn primary">Lorem ipsum dolor</a>
+        <a href="#" class="btn">Sit Amet</a>
+      </div>
+    </div>
 
   </body>
 </html>
