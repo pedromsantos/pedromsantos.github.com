@@ -121,7 +121,7 @@
 	You can find out all the new stuff in the official blog <a href='http://letsbasket.com/onthefield/blog/letsbasket-1-18-its-now-available/'>here</a>. 
 </p><p>
 	Regarding code, this version brings big refractors. We took the opportunity to clean up the code base and make the design more explicit. There is still a design decision that I'm struggling with. Should the domain model notify model changes using notifications or delegate callbacks? We are still using delegate call backs although we simplified a lot the call back mechanisms in place. I understand that using notifications brings greater decoupling between the domain model and the controllers. The problem for me, until now, has been how to implement unit testing over notifications. I need to investigate how to unit test a project using notifications more deeply before committing to a decision. If you have experience in this area I'd appreciate a comment.
-</p><div id='disqus_thread' />
+</p>
           </div>
           <div class="span4">
             <h3>Other stuf</h3>
