@@ -1,5 +1,5 @@
 ---
-layout: deafult
+layout: default
 title: LetsBasket 1.18 is out there
 categories: [LetsBasket]
 tags: [IOS, Apps, Objective-C, XCode]
