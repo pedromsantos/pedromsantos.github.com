@@ -13,7 +13,7 @@ tags: [IOS, Apps, Objective-C, XCode]
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
 
-<<p>
+<p>
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -31,4 +31,5 @@ tags: [IOS, Apps, Objective-C, XCode]
 	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
 <em>Posted on {{ post.date | date_to_long_string }}.</em>
+<a href="{{ page.url }}#disqus_thread">View Comments</a>
 <div id="disqus_thread"></div>
