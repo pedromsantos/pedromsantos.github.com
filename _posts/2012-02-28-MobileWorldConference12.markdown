@@ -7,12 +7,12 @@ tags: [Conference, mobile, 2012, Barcelona]
 
 <p>First day impressions 27 Feb</p>
 
-<p>Registration</p>
+<h3>Registration</h3>
 <p>I allways expect registration in big events to be a bit painfull,
 suprinsigly registration to the MWC2012 went super smooth. First kudos
 for the organization.</p>
 
-<p>Where's my session?</p>
+<h3>Where's my session?</h3>
 <p>Once inside I asked for directions to the Intel conference I had
 registered. At the information desk they had no knowledge of such event.
 Fortunatly I was able to find the registration
