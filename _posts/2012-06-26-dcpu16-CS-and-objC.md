@@ -39,7 +39,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 <b>Responsability:</b> Parse tokens from Lexer into Statments.
     
 <p><b>Implementation details:</b></p>
-<p>The Parser transforms Lexer token into Model Statments following a set of rules.</p>
+<p>The Parser transforms Lexer token into Model/Statments following a set of rules defined by the language.</p>
     
 ###Assembler
 Responsible for code generation from parser Statments.
