@@ -39,7 +39,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 <i>Responsability:</i> Parse tokens from Lexer into Statments.
     
 <p><i>Implementation details:</i></p>
-<p>The Parser transforms Lexer token into Model/Statments following the of rules defined by the language. A Stament is composed of an opcode folowed by Operand A and Operand B. Optionaly it cal include a label and data.</p>
+<p>The Parser transforms Lexer token into Model/Statments following the of rules defined by the language. A Stament is composed of an opcode folowed by Operand A and Operand B. Optionaly it can include a label and data.</p>
 
 * Sample usage
 	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/ParserTests/ParserTests.cs)
