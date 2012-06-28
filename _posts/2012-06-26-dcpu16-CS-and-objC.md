@@ -19,6 +19,8 @@ It was quite a chalange implementing the project using an OO aproach since in al
 
 ##DCPU16.Net
 
+###Project structure
+
 
 
 ##ObjC-DCPU-16-ASM
