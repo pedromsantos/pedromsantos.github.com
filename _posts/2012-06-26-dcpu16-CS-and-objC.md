@@ -1,6 +1,9 @@
 ---
 layout: default
 published: false
+title: DCPU16.Net and ObjC-DCPU-16-ASM
+categories: [Software crafting]
+tags: [OpenSource, C#, Objective-C, DCPU16]
 ---
 #DCPU16.Net and ObjC-DCPU-16-ASM
 
