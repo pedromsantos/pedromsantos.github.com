@@ -36,7 +36,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/LexerTests.m)
     
 ###Parser
-<b>Responsability:</b> Parse tokens from Lexer into Statments.
+<i>Responsability:</i> Parse tokens from Lexer into Statments.
     
 <p><i>Implementation details:</i></p>
 <p>The Parser transforms Lexer token into Model/Statments following the of rules defined by the language. A Stament is composed of an opcode folowed by Operand A and Operand B. Optionaly it cal include a label and data.</p>
@@ -46,7 +46,9 @@ It was quite a chalange implementing the project using an OO aproach since in al
 	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/ParserTests.m)
     
 ###Assembler
-Responsible for code generation from parser Statments.
+<i>Responsability:</i> Generate machine code from parser Statments.
+
+<p><i>Implementation details:</i></p>
 
 * Sample usage
 	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/AssemblerTests/AssemblesIntegrationTests.cs)
@@ -56,7 +58,7 @@ Responsible for code generation from parser Statments.
 <i>Responsability:</i> Instruction execution.
     
 ###DCPU16Assembler
-<i>Responsability:</i>Console program that converts DCPU16 source code into an executable machine language program.
+<i>Responsability:</i> Console program that converts DCPU16 source code into an executable machine language program.
 
 ###Model
 <i>Responsability:</i> Cross project data.
