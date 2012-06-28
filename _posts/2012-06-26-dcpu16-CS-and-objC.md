@@ -30,6 +30,10 @@ It was quite a chalange implementing the project using an OO aproach since in al
 <p>The parameterless Lexer contructor creates a Lexer using the IgnoreNoneTokenStrategy and the PeekTokenStrategy.</p>
 
 <p>As a tokenizer the Lexer uses regular expressions.</p>
+
+*Sample usage
+	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/LexerTests/LexerTests.cs)
+	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/LexerTests.m)
     
 ###Parser
 <b>Responsability:</b> Parse tokens from Lexer into Statments.
