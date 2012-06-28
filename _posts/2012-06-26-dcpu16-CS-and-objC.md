@@ -47,7 +47,11 @@ It was quite a chalange implementing the project using an OO aproach since in al
     
 ###Assembler
 Responsible for code generation from parser Statments.
-    
+
+* Sample usage
+	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/AssemblerTests/AssemblesIntegrationTests.cs)
+	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/AssemblerTests.m)
+
 ###Emulator
 <b>Responsability:</b> Instruction execution.
     
