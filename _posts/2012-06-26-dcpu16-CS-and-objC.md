@@ -20,7 +20,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 ##Project structure
 
 ###Lexer
-<b>Responsability</b> source code tokenization.
+<b>Responsability:</b> Source code tokenization.
     
 <p><b>Implementation details:</b></p> 
 A Lexer converts source code in text format into a set of defined tokens. A typical parser usualy exposes peek token and a consume next token. The first reads the next token without cosuming it and the second reads and consumes a token. 
@@ -30,7 +30,7 @@ The DCPU16.Net Lexer is no exception it exposes NextToken and a ConsumeTokenUsin
 The parameterless Lexer contructor creates a Lexer using the IgnoreNoneTokenStrategy and the PeekTokenStrategy.
     
 ###Parser
-Responsible for parsing tokens from Lexer into Statments.
+<b>Responsability:</b> Parse tokens from Lexer into Statments.
     
 Implementation details:
     
@@ -38,11 +38,11 @@ Implementation details:
 Responsible for code generation from parser Statments.
     
 ###Emulator
-Responsible for instruction execution.
+<b>Responsability:</b> Instruction execution.
     
 ###DCPU16Assembler
-Console program that converts DCPU16 source code into an executable machine language program.
+<b>Responsability:</b>Console program that converts DCPU16 source code into an executable machine language program.
 
 ###Model
-Resposible for cross project data.
+<b>Responsability:</b> Cross project data.
 
