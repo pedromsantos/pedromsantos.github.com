@@ -21,6 +21,21 @@ It was quite a chalange implementing the project using an OO aproach since in al
 
 ###Project structure
 
+* Lexer
+	* Responsible for source code tokenization.
+    * Implementation details
+    	* A Lexer converts source code in text format into a set of defined tokens. A typical parser usualy exposes peek token and a consume next token. The first reads the next token without cosuming it and the second reads and consumes a token. The DCPU16.Net Lexer is no exception it exposes NextToken and a ConsumeTokenUsingStrategy. The behaviour of NextToken can be defined at contruct time or at run time by defining the IgnoreTokenStrategy and the ConsumeTokenStrategy. The IgnoreTokenStrategy allows client code the define behaviour regarding any tokens that it wants to be ignored by the Lexer. The ConsumeTokenStrategy allows client code to define behaviour regarding token consuption.  
+* Model
+	* Resposible for cross project data.
+* Parser
+	* Responsible for parsing tokens from Lexer into Statments.
+* Assembler
+	* Responsible for code generation from parser Statments.
+* Emulator
+	* Responsible for instruction execution.
+* DCPU16Assembler
+	* Console program that converts DCPU16 source code into an executable machine language program.
+
 
 
 ##ObjC-DCPU-16-ASM
