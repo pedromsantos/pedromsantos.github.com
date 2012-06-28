@@ -31,7 +31,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 
 <p>As a tokenizer the Lexer uses regular expressions.</p>
 
-*Sample usage
+* Sample usage
 	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/LexerTests/LexerTests.cs)
 	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/LexerTests.m)
     
