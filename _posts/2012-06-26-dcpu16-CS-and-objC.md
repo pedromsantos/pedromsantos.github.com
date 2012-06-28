@@ -20,7 +20,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 ##Project structure
 
 ###Lexer
-Responsible for source code tokenization.
+<b>Responsability</b> source code tokenization.
     
 <p><b>Implementation details:</b></p> 
 A Lexer converts source code in text format into a set of defined tokens. A typical parser usualy exposes peek token and a consume next token. The first reads the next token without cosuming it and the second reads and consumes a token. 
