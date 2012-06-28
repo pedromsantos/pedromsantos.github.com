@@ -39,7 +39,7 @@ It was quite a chalange implementing the project using an OO aproach since in al
 <b>Responsability:</b> Parse tokens from Lexer into Statments.
     
 <p><b>Implementation details:</b></p>
-
+<p>.</p>
     
 ###Assembler
 Responsible for code generation from parser Statments.
@@ -52,4 +52,5 @@ Responsible for code generation from parser Statments.
 
 ###Model
 <b>Responsability:</b> Cross project data.
+
 
