@@ -28,12 +28,16 @@ It was quite a chalange implementing the project using an OO aproach since in al
         
 * Model
 	* Resposible for cross project data.
+    
 * Parser
 	* Responsible for parsing tokens from Lexer into Statments.
+    
 * Assembler
 	* Responsible for code generation from parser Statments.
+    
 * Emulator
 	* Responsible for instruction execution.
+    
 * DCPU16Assembler
 	* Console program that converts DCPU16 source code into an executable machine language program.
 
