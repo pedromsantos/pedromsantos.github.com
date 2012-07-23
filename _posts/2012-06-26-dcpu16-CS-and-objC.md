@@ -55,11 +55,15 @@ It was quite a chalange implementing the project using an OO aproach since in al
 
 ###Emulator
 <i>Responsability:</i> Instruction execution.
-    
+
+* Sample usage
+	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/CPUTests/EmulatorIntegrationTests.cs)
+	* [Objective-C](https://github.com/pedromsantos/ObjC-DCPU-16-ASM/blob/master/DCPU16EmulatorTests/DCPUTests.m)
+
 ###DCPU16Assembler
 <i>Responsability:</i> Console program that converts DCPU16 source code into an executable machine language program.
 
-[C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/AssemblerTests/AssemblesIntegrationTests.cs)
-
+* Sample usage
+	* [C#](https://github.com/pedromsantos/DCPU16.Net/blob/master/AssemblerTests/AssemblesIntegrationTests.cs)
 ###Model
 <i>Responsability:</i> Cross project data.
