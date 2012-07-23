@@ -6,8 +6,6 @@ categories: [Software crafting]
 tags: [OpenSource, C#, Objective-C, DCPU16]
 ---
 
-#DCPU16.Net and ObjC-DCPU-16-ASM
-
 [DCPU16.Net](https://github.com/pedromsantos/DCPU16.Net) is a software implementation of DCPU16 according to the specs @notch published [here](http://0x10c.com/doc/dcpu-16.txt). Thr project is developed in C# and uses the .Net framework.
 
 [ObjC-DCPU-16-ASM](https://github.com/pedromsantos/ObjC-DCPU-16-ASM) also implements DCPU16 according to the same specs, but instead of using C# it's developed in Objective-C and CocoaTouch. 
