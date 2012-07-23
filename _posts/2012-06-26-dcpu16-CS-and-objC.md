@@ -68,3 +68,6 @@ It was quite a chalange implementing the project using an OO aproach since in al
 
 ###Model
 <i>Responsability:</i> Cross project data.
+
+
+To be finished ...
