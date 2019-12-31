@@ -4,7 +4,7 @@ set -u
 GENERATOR="${1}"
 
 DIRECTORY="public"
-BRANCH="gh-pages"
+BRANCH="master"
 
 echo ":: Removing [${DIRECTORY}]."
 rm -rf "${DIRECTORY}"
