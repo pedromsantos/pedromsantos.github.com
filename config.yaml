@@ -1,0 +1,42 @@
+languageCode: "en-us"
+title: "Pedro Moreira Santos"
+
+baseUrl: "http://pedromsantos.github.io/"
+permalinks:
+  post: ":slug"
+
+params:
+  description: "Pedro Moreira Santos on software design and development."
+  twitter: "pedromsantos"
+  #googleSearchCode: "Noz-S7X4481rtWBcFiugLcNzvzXEG3Ukn-T6QVPPUOE"
+
+menu:
+  left:
+    - name: "Posts"
+      url: "/"
+  right:
+    - name: "GitHub"
+      url: "https://github.com/pedromsantos"
+      weight: 3
+    - name: "Twitter"
+      url: "https://twitter.com/pedromsantos"
+      weight: 2
+    - name: "RSS"
+      url: "/index.xml"
+      weight: 1
+
+theme: "barebones"
+
+#googleAnalytics: "UA-112239048-1"
+
+disableHugoGeneratorInject: true
+enableEmoji: true
+footnoteReturnLinkContents: "↩"
+
+disableKinds:
+  - taxonomy
+  - taxonomyTerm
+  - section
+
+pygmentsCodeFences: true
+pygmentsUseClasses: true
