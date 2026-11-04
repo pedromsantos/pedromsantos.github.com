@@ -1,72 +1,586 @@
-<!DOCTYPE html>
-<html lang="en-us">
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Pedro Moreira Santos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedro Santos · Your Teams Already Use AI. Let's Make It Engineering.</title>
+<meta name="description" content="Prompts are for thinking. Specs are for keeping. I help engineering teams adopt AI agents on that rule.">
+<meta property="og:title" content="Pedro Santos · Your teams already use AI. Let's make it engineering.">
+<meta property="og:description" content="AI adoption and spec-driven development for engineering teams.">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "mainEntity": {
+    "@type": "Person",
+    "name": "Pedro Moreira Santos",
+    "alternateName": "Pedro Santos",
+    "image": "https://github.com/pedromsantos.png",
+    "description": "Helps engineering organisations adopt AI agents through spec-driven development: durable specifications, independent oracles, enforced guardrails and regenerable code.",
+    "address": { "@type": "PostalAddress", "addressLocality": "Madrid", "addressCountry": "ES" },
+    "knowsAbout": ["AI adoption", "Agentic engineering", "Spec-driven development", "AI code review", "Large language models", "Claude Code", "Domain-driven design", "Test-driven development", "Evolutionary architecture"],
+    "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos", "https://x.com/pedromsantos"]
+  }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --tint-2: rgb(180 83 9 / 0.08);
+    --grid: rgb(28 25 23 / 0.05);
+    --green: #16a34a;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    --radius: 1rem;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --tint-2: rgb(251 191 36 / 0.1);
+      --grid: rgb(255 255 255 / 0.04);
+      --green: #4ade80;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  h1, h2, h3 { margin: 0; line-height: 1.12; text-wrap: balance; }
+  h1, h2 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.015em; }
+  p, li { text-wrap: pretty; }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  img { display: block; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .container { width: min(68rem, 100% - 2rem); margin-inline: auto; }
+  .mono { font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); margin: 0; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  /* Nav */
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .container { display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav ul { display: flex; gap: 0.25rem; margin: 0; padding: 0; list-style: none; }
+  .nav ul a {
+    padding: 0.4rem 0.7rem; border-radius: 999px;
+    font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav ul a:hover { color: var(--text); background: var(--tint); }
+  @media (max-width: 46rem) { .nav ul li:not(:last-child) { display: none; } }
 
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="stylesheet" href="/css/syntax-highlighting.css" />
+  /* Hero */
+  .hero { position: relative; padding: 9rem 0 4rem; isolation: isolate; }
+  .hero::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    mask-image: radial-gradient(ellipse 75% 60% at 40% 40%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 40% 40%, #000 30%, transparent 75%);
+  }
+  .hero-grid { max-width: 64rem; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.6rem; margin: 0;
+    padding: 0.4rem 0.9rem 0.4rem 0.75rem;
+    border: 1px solid var(--border-strong); border-radius: 999px; background: var(--card);
+    font-family: var(--mono); font-size: 0.8125rem; color: var(--muted);
+  }
+  .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--green); }
+  .hero h1 { margin-top: 1.5rem; font-size: clamp(2.6rem, 6.5vw, 4.75rem); }
+  .hero h1 span { display: block; color: var(--accent); font-style: italic; }
+  .lede { margin: 1.5rem 0 0; max-width: 39rem; font-size: 1.2rem; color: var(--muted); }
+  .lede strong { color: var(--text); font-weight: 600; }
+  .lede.tagline { margin-top: 0.75rem; font-family: var(--serif); font-style: italic; font-size: 1.3rem; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.2rem;
+    border-radius: 999px; font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    border: 1px solid var(--border-strong); color: var(--text); background: var(--card);
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); border-color: var(--accent); }
+  .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .facts { margin-top: 1.75rem; }
+  .portrait {
+    width: 8rem; height: 8rem; margin: 0 auto 1.75rem; border-radius: 50%; object-fit: cover;
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 0 0 0.6rem var(--card), 0 0 0 calc(0.6rem + 1px) var(--border);
+  }
+  @media (max-width: 48rem) {
+    .hero { padding-top: 7rem; }
+  }
 
-  
-  <meta name="theme-color" content="#1e2327">
+  /* Numbers strip */
+  .numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr)); gap: 1rem; margin: 3.5rem 0 0; padding: 0; list-style: none; }
+  .numbers li { padding: 1rem 1.1rem; border-left: 2px solid var(--accent); background: color-mix(in srgb, var(--card) 70%, transparent); border-radius: 0 0.75rem 0.75rem 0; }
+  .numbers b { display: block; font-family: var(--serif); font-size: 1.9rem; line-height: 1.1; }
+  .numbers span { font-size: 0.9rem; color: var(--muted); }
 
-  
+  /* Sections */
+  section { padding: 5.5rem 0; border-top: 1px solid var(--border); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  section h2 { font-size: clamp(2rem, 4.5vw, 3rem); max-width: 44rem; }
+  .intro { margin: 1rem 0 0; max-width: 42rem; color: var(--muted); }
 
-  
-  <meta name="google-site-verification" content="" />
+  .grid { display: grid; gap: 1rem; margin-top: 2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr)); }
+  .grid.three { grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr)); }
+  .card { position: relative; padding: 1.5rem; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); transition: border-color 0.2s; }
+  .card:hover { border-color: var(--border-strong); }
+  .card h3 { font-size: 1.15rem; margin-top: 0.5rem; }
+  .card p { margin: 0.6rem 0 0; color: var(--muted); font-size: 0.98rem; }
+  .card.wide { grid-column: 1 / -1; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .tags li { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--tint); }
+  .stats { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 1rem 0 0; padding: 0; list-style: none; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .stats b { color: var(--text); font-weight: 600; }
 
-  
-  <meta name="description" content="Pedro Moreira Santos on software design and development." />
-  
+  /* The law */
+  .law { margin-top: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .law .rule { padding: 1.75rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); }
+  .law .rule b { display: block; font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin-bottom: 0.5rem; font-weight: 500; }
+  .law .rule p { margin: 0; font-family: var(--serif); font-size: 1.35rem; line-height: 1.35; }
+  .law .rule.one { background: var(--tint); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+  @media (max-width: 48rem) { .law { grid-template-columns: 1fr; } }
+  .loops { margin-top: 1rem; padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); }
+  .loops { overflow-x: auto; margin-inline: 0; }
+  .loops img { width: 100%; min-width: 44rem; height: auto; display: block; border-radius: 0.6rem; }
+  h3.next { margin-top: 3rem; font-family: var(--serif); font-size: 1.6rem; font-weight: 600; }
+  .loops figcaption { margin-top: 1rem; font-size: 0.95rem; color: var(--muted); max-width: 52rem; }
+  .question {
+    margin: 2.5rem 0 0; padding: 1.5rem 1.75rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.75rem); line-height: 1.3; font-style: italic;
+  }
+  .question cite { display: block; margin-top: 0.6rem; font-family: var(--mono); font-size: 0.8125rem; font-style: normal; color: var(--faint); }
+  .metrics { margin: 1rem 0 0; padding: 0; list-style: none; }
+  .metrics li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); font-size: 0.95rem; color: var(--muted); }
+  .metrics li:last-child { border-bottom: 0; }
+  .metrics b { color: var(--text); font-weight: 600; }
+
+  /* Engagement steps */
+  .steps { margin: 2.5rem 0 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); }
+  .steps li { counter-increment: step; padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border); background: var(--card); }
+  .steps li::before { content: '0' counter(step); display: block; font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); }
+  .steps h3 { margin-top: 0.4rem; font-size: 1.15rem; }
+  .steps p { margin: 0.5rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+  /* Workshops */
+  .workshop { display: flex; flex-direction: column; }
+  .workshop .len { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); padding: 0.2rem 0.55rem; border-radius: 999px; background: var(--tint); align-self: flex-start; }
+  .workshop ol { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.95rem; }
+  .workshop ol li { padding: 0.15rem 0; }
+
+  /* Writing links */
+  .links { margin: 2.5rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); }
+  .links > li > a, .links > li > div {
+    display: flex; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.25rem; height: 100%;
+    border: 1px solid var(--border); border-radius: var(--radius); background: var(--card);
+    text-decoration: none; color: var(--text); transition: border-color 0.2s;
+  }
+  .links a:hover { border-color: var(--accent); }
+  .links > li > div { border-style: dashed; color: var(--muted); }
+  .links small { display: block; font-family: var(--mono); font-size: 0.75rem; color: var(--faint); margin-top: 0.25rem; }
+  .links .arrow { color: var(--faint); }
+
+  /* Foundation */
+  .foundation { display: grid; grid-template-columns: 1.1fr 1fr; gap: 3rem; margin-top: 2.5rem; align-items: start; }
+  .foundation p { margin: 0 0 1rem; color: var(--muted); }
+  .foundation ul { margin: 0; padding: 0; list-style: none; }
+  .foundation li { padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.97rem; }
+  .foundation li:last-child { border-bottom: 0; }
+  .foundation li .mono { display: block; }
+  @media (max-width: 48rem) { .foundation { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+  /* Contact */
+  .contact { text-align: center; }
+  .contact h2, .contact .intro { margin-inline: auto; }
+  .contact .ctas { justify-content: center; }
+
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+</style>
 </head>
-
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-
-
-<header>
-<nav>
-  <ul>
-    
-    <li class="menu-left"><a href="/">Posts</a></li>
-    
-    
-    <li class="menu-right"><a href="/index.xml">RSS</a></li>
-    
-    <li class="menu-right"><a href="https://twitter.com/pedromsantos">Twitter</a></li>
-    
-    <li class="menu-right"><a href="https://github.com/pedromsantos">GitHub</a></li>
-    
-  </ul>
+<nav class="nav" aria-label="Main">
+  <div class="container">
+    <a class="brand" href="#top"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <ul>
+      <li><a href="#help">how I help</a></li>
+      <li><a href="#work">work</a></li>
+      <li><a href="#law">the law</a></li>
+      <li><a href="#foundation">foundation</a></li>
+      <li><a href="#writing">writing</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
 </nav>
 
-</header>
+<main id="main">
+  <header class="hero" id="top">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="pill"><span class="dot" aria-hidden="true"></span>AI adoption · agentic engineering · spec-driven development</p>
+          <h1>Pedro Santos. <span>Your teams already use AI. Let's make it engineering.</span></h1>
+          <p class="lede">
+            Tools are the easy part. Trustworthy output takes a way of working.
+            I bring <strong>a method I've applied to real products</strong>, the workshops to teach it,
+            and the agents and checks to make it stick.
+          </p>
+          <p class="lede tagline">Prompts are for thinking. <strong>Specs are for keeping.</strong></p>
+          <div class="ctas">
+            <a class="btn primary" href="#contact">Work with me</a>
+            <a class="btn" href="#help">See what I offer</a>
+          </div>
+          <p class="mono facts">Agentic engineering · workshop author · Madrid, Spain</p>
+        </div>
+      </div>
 
-<br/>
+      <ul class="numbers" aria-label="Recent work in numbers">
+        <li><b>332</b><span>repositories assessed for test debt</span></li>
+        <li><b>8</b><span>skills in one plugin that turns a spec into code</span></li>
+        <li><b>19</b><span>test skills and 3 agents added in one contribution</span></li>
+        <li><b>49</b><span>AI review and generation skills, with automated prompt evals</span></li>
+      </ul>
+    </div>
+  </header>
 
+  <section id="help">
+    <div class="container">
+      <p class="eyebrow">01 · how I can help</p>
+      <h2>Wherever your teams are today, we start there.</h2>
+      <p class="intro">
+        The tools arrived faster than the playbook. Whatever practice is already there, good or bad, gets louder,
+        so adoption is less about picking a tool and more about what you make durable.
+      </p>
 
+      <ol class="steps">
+        <li><h3>Assess</h3><p>Where your teams sit on the maturity curve, which practices AI will amplify, and which it will expose. You get a scored view and a short list of priorities.</p></li>
+        <li><h3>Train</h3><p>Hands-on workshops where engineers feel the difference between vibe coding and spec-guided generation.</p></li>
+        <li><h3>Pilot</h3><p>One real thin slice with your team, spec first: acceptance tests that judge the result, automated architecture checks, one implementation prompt, evidence.</p></li>
+        <li><h3>Scale</h3><p>Skills, review agents, tests the agent cannot edit, PR traceability and the health metrics that keep it honest.</p></li>
+      </ol>
 
+      <div class="grid three">
+        <article class="card workshop">
+          <span class="len">half or full day</span>
+          <h3>AI Amplifies Everything</h3>
+          <p>Software engineering in the AI era: facts over hype, from the evidence (DORA, METR) to what matters more now.</p>
+          <ol>
+            <li>Amplifier audit of your practices</li>
+            <li>Rules-only vibe-coding build</li>
+            <li>Draft the specs to regenerate it</li>
+            <li>Spec-guided rebuild, compared for trust</li>
+          </ol>
+        </article>
+        <article class="card workshop">
+          <span class="len">3 days</span>
+          <h3>Spec-Driven Development with AI Agents</h3>
+          <p>Build, repair and evolve software with coding agents. Dry-run on real code at Vista, with a cheat sheet, 10 participant packages and an eight-skill plugin.</p>
+          <ol>
+            <li>Green field: two runs, prompt-first against spec-first, then a comparison</li>
+            <li>Legacy: recover the rules, then make change safe</li>
+            <li>Architecture: evolve in four phases under fitness checks</li>
+            <li>Tooling: a plugin of eight skills, from specify to deletion test</li>
+          </ol>
+        </article>
+        <article class="card workshop">
+          <span class="len">2.5 days</span>
+          <h3>AI-Assisted Evolutionary Architecture</h3>
+          <p>From monolith to modules to extraction and event sourcing on a companion codebase, with AI in every step.</p>
+          <ol>
+            <li>Naive AI: see what goes wrong without structure</li>
+            <li>Build your own agent: learn what is inside the tools</li>
+            <li>Professional agents: work with real coding agents</li>
+            <li>Orchestrated workflows: many agents, one spec</li>
+          </ol>
+        </article>
+      </div>
+    </div>
+  </section>
 
+  <section id="work">
+    <div class="container">
+      <p class="eyebrow">02 · recent work</p>
+      <h2>Shipped on real codebases.</h2>
+      <p class="intro">
+        One method, two very different companies. At Vista, a global company with hundreds of repositories,
+        I teach it and build the agents that enforce it. At Refine, an AI startup that checks research papers,
+        I built the code reviewer and the guardrails around its LLM product.
+      </p>
 
+      <div class="grid">
+        <article class="card">
+          <p class="mono">Vista · 2026</p>
+          <h3>A product rebuilt from its specifications</h3>
+          <p>
+            Wrote the decision that made specs the source of truth for an internal AI content-generation tool: people
+            change specs, one fixed prompt generates the code, and a failure means fix the spec and regenerate.
+            Then led the rebuild as its main author.
+          </p>
+          <ul class="tags"><li>specs as source of truth</li><li>Gherkin oracle</li><li>architecture checks</li><li>rebuild from nothing</li></ul>
+        </article>
 
-<h1 id="pedro-moreira-santos">Pedro Moreira Santos</h1>
+        <article class="card">
+          <p class="mono">Vista · 2025–2026</p>
+          <h3>A skill library for AI review and generation</h3>
+          <p>
+            Claude Code and GitHub Copilot skills and agents that review and generate code against DDD, hexagonal
+            and CQRS rules, with an orchestrator handing work to specialist reviewers and an n8n workflow
+            reviewing merge requests. The prompts are tested like code.
+          </p>
+          <ul class="stats"><li><b>49</b> skills</li><li><b>11</b> agents</li><li>sole author</li><li>promptfoo evals on pass/fail samples</li></ul>
+        </article>
 
-<p>I have worked in software development for the past 25 years. I&rsquo;m a co-author of the <a href="https://leanpub.com/agiletechnicalpracticesdistilled">Agile Technical practices</a> book. I&rsquo;m also a co-Founder of <a href="https://twitter.com/cokaido_es">CoKaiDō</a>.</p>
+        <article class="card">
+          <p class="mono">Vista · 2026</p>
+          <h3>An agent team for test coverage</h3>
+          <p>
+            Three agents with separate duties: an auditor ranks modules by risk, an executor adds tests behind a gate,
+            and a reviewer is the independent gate before merge. Behind them, skills for characterisation and
+            golden-master tests, seam refactoring, test smells and focused mutation testing. Contributed to the
+            company-wide skills repository in one change, with a skill that splits large merge requests.
+          </p>
+          <ul class="stats"><li><b>19</b> test skills</li><li><b>3</b> agents</li><li><b>6</b> coverage report formats</li></ul>
+        </article>
 
-<p>This blog is mostly about software development related &ldquo;stuff&rdquo;.</p>
+        <article class="card">
+          <p class="mono">Vista · tooling · 2026</p>
+          <h3>A specification you can execute</h3>
+          <p>
+            Eight skills built on Chad Fowler's Phoenix Architecture and its four primitives: specification,
+            evaluation, context boundary and provenance. A checker
+            validates the trace from rule to scenario to code. A deletion test asks what survives a full rewrite.
+            The generator refuses to work from a plan that no human approved.
+          </p>
+          <ul class="stats"><li><b>8</b> skills</li><li><b>1</b> checker</li><li>deletion test</li></ul>
+        </article>
 
-<h2 id="posts">Posts</h2>
+        <article class="card">
+          <p class="mono">Vista · methods · 2025–2026</p>
+          <h3>Methods that outlive one product</h3>
+          <p>
+            Authored or co-authored the method documents other teams apply: a 7-level testing maturity model that
+            separates governance from guidance, an approved engineering-excellence framework with pillars, rubric and
+            measurement, and an execution plan for fleet-wide test-debt removal. The plan assessed 332
+            repositories. 248 were candidates, and 214 reported no coverage at all.
+          </p>
+          <ul class="tags"><li>testing maturity</li><li>engineering excellence</li><li>test-debt plan</li><li>measurement</li><li>governance</li></ul>
+        </article>
 
+        <article class="card">
+          <p class="mono">Refine · 2026</p>
+          <h3>An AI code reviewer in under two weeks</h3>
+          <p>
+            Three tiers: deterministic AST rules first, a small judgement model second, an optional LLM summary last.
+            Reviews only changed files, fails CI only on new findings, and ships as a GitHub Action and a hosted
+            GitHub App, delivered spec-first with Gherkin scenarios and ADRs.
+          </p>
+          <ul class="stats"><li><b>64</b> rules</li><li><b>8</b> languages</li><li><b>41 s</b> measured · <b>~$0.20</b> estimated per 280-file repo</li></ul>
+        </article>
 
-<ul>
-  
-</ul>
+        <article class="card wide">
+          <p class="mono">Refine · 2025–2026</p>
+          <h3>Guardrails for an LLM product</h3>
+          <p>
+            Worked on a multi-provider LLM pipeline (client, segmentation, prompts, rate limits), then on what keeps
+            agents honest in the codebase: instruction files for Claude and Copilot, architecture rules turned into
+            tests, LLM integration tests that check meaning rather than exact text, and recurring architecture reviews.
+          </p>
+          <ul class="tags"><li>prompt engineering</li><li>LLM integration tests</li><li>agent instructions</li><li>architecture tests</li><li>hexagonal · DDD · CQRS</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
 
+  <section id="law">
+    <div class="container">
+      <p class="eyebrow">03 · the approach</p>
+      <h2>Pedro's L3 Law.</h2>
+      <p class="intro">
+        Level 3 agentic engineering is not using a coding assistant more often. It is a different way of
+        organising the work: engineers spend less time directing code changes and more time designing the
+        specifications, constraints and evaluations that produce reliable code. At L3, specs, not prompts,
+        drive the code; L4 adds production feedback to the specs.
+        <em>Yes, I named it after myself, so that nobody else gets the blame.</em>
+      </p>
 
+      <div class="law">
+        <div class="rule"><b>the specs loop · humans</b><p>Use as many rich, iterative prompts as you need to create the specifications.</p></div>
+        <div class="rule one"><b>the implementation loop · agent</b><p>Then with ONE prompt: generate the code and associated unit tests.</p></div>
+      </div>
 
+      <figure class="loops">
+        <a href="images/pedros-law-two-loops.svg"><img src="images/pedros-law-two-loops.svg" width="1280" height="720"
+          alt="Pedro's Law, two loops. In the specs loop, humans use many prompts with AI agents to write, approve and version a specification, and review the result. In the implementation loop, the agent receives one controlled prompt, then generates, evaluates and improves the implementation within the approved specification. Every specification failure returns to the specs loop."></a>
+        <figcaption>
+          Humans own the specs loop. The agent owns the implementation loop and may iterate as long as it needs,
+          but it may not add requirements, weaken a test or bypass a boundary. If the spec is wrong, it stops and
+          escalates.
+        </figcaption>
+      </figure>
+
+      <div class="grid three">
+        <article class="card">
+          <p class="mono">risk tiers</p>
+          <h3>Spec depth follows risk</h3>
+          <p>A copy change needs behaviour, scope and acceptance tests. A public contract or a security control also needs ADRs, observability, rollback and a named human approver.</p>
+        </article>
+        <article class="card">
+          <p class="mono">the oracle</p>
+          <h3>Not the generated unit test</h3>
+          <p>Human-approved acceptance tests (the oracle) and fitness functions (automated architecture checks) judge the code. CODEOWNERS, CI and sandbox permissions lock them, not a polite line in a prompt.</p>
+        </article>
+        <article class="card">
+          <p class="mono">regeneration</p>
+          <h3>Code is disposable output</h3>
+          <p>Implementation is the output of a versioned spec and a controlled process. Fix the spec, discard the slice, regenerate, and run the same gates again.</p>
+        </article>
+        <article class="card">
+          <p class="mono">traceability</p>
+          <h3>Every change has a pedigree</h3>
+          <p>Each pull request records the spec version, ADR, prompt template, baseline commit, agent, model and evaluation report, so a run can be reproduced and judged.</p>
+        </article>
+        <article class="card">
+          <p class="mono">parallel agents</p>
+          <h3>Shared specs, many agents</h3>
+          <p>Parallel agents only help when they share durable contracts and evaluation criteria. Otherwise you get five interpretations of one problem.</p>
+        </article>
+        <article class="card">
+          <p class="mono">health metrics</p>
+          <h3>Measure the system, not the prompts</h3>
+          <ul class="metrics">
+            <li><span>Spec traceability</span><b>% PRs</b></li>
+            <li><span>Corrective prompts</span><b>per PR</b></li>
+            <li><span>Regeneration success</span><b>% gates</b></li>
+            <li><span>Post-merge defects</span><b>escaped</b></li>
+          </ul>
+        </article>
+      </div>
+
+      <blockquote class="question">
+        If this prompt disappears, where is the knowledge it introduced?
+        <cite>The prompt-local knowledge test</cite>
+      </blockquote>
+      <div class="ctas"><a class="btn primary" href="l3-law.html">Read the full L3 Law</a></div>
+
+      <h3 class="next">What next: from L3 to L4</h3>
+      <figure class="loops">
+        <a href="images/pedros-law-three-loops.svg"><img src="images/pedros-law-three-loops.svg" width="1600" height="900" loading="lazy"
+          alt="Pedro's Law, three loops. The production loop attaches to Merge: CI/CD ships the change, live evaluation watches it against SLOs, and a rollback, automatic on a breach or triggered by a human, redeploys the last stable version. The root cause always goes back to specification work, never straight to the implementation loop. Telemetry and business events from the stable version feed a spec mining agent that proposes spec changes, closing the loop."></a>
+        <figcaption>
+          In production, every root cause goes back to the spec, and a mining agent reads telemetry to propose spec
+          changes. Humans still approve every spec change; only a low-risk change may skip human code review on its way to merge.
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <section id="foundation">
+    <div class="container">
+      <p class="eyebrow">04 · foundation</p>
+      <h2>AI amplifies what is already there.</h2>
+      <div class="foundation">
+        <div>
+          <p>
+            Before agents, I spent over three decades writing software and teaching teams how to keep it easy to change:
+            test-driven development, refactoring, domain-driven design and hexagonal architecture.
+          </p>
+          <p>
+            That is the ground this work stands on. An acceptance test is an oracle. A bounded context is a context
+            boundary. An ADR is provenance. Teams with strong engineering get far more out of AI; teams without it
+            get their problems faster.
+          </p>
+          <p>
+            The same ideas are written down as guidance for other teams: service classification, seam refactoring,
+            decision records and fitness functions.
+          </p>
+        </div>
+        <ul>
+          <li>Principal author of <a href="https://leanpub.com/agiletechnicalpracticesdistilled">Agile Technical Practices Distilled</a><span class="mono">with Marco Consolaro and Alessandro Di Gioia · Packt</span></li>
+          <li>Speaker at DDD Europe, KanDDDinsky, SPA, Agile Spain and many SoCraTes<span class="mono">2012–2023 · craft, design, ensemble programming</span></li>
+          <li>Hundreds of hours pairing, mentoring and coaching<span class="mono">an open <a href="https://github.com/pedromsantos/AGILE-TECHICAL-PRACTICES-mentoring-program">mentoring program</a></span></li>
+          <li>Open-source music theory libraries in F#, Kotlin, TypeScript<span class="mono"><a href="https://github.com/pedromsantos/vaughan">vaughan</a> and friends · my favourite kata</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="container">
+      <p class="eyebrow">05 · writing</p>
+      <h2>Thinking out loud.</h2>
+      <p class="intro">Long-form pieces on agentic engineering and on what architecture means when code can be regenerated.</p>
+      <ul class="links">
+        <li><a href="l3-law.html"><span>Pedro's L3 Law: specifications first, code second<small>article · 11 min read · 2026</small></span><span class="arrow">→</span></a></li>
+        <li><div><span>Evolutionary meets regenerative: what comes after "safe to change"<small>article · coming soon</small></span></div></li>
+        <li><div><span>Architecture in the age of AI-generated code<small>article · coming soon</small></span></div></li>
+        <li><div><span>A practitioner's guide to evolutionary architecture<small>11-part series · coming soon</small></span></div></li>
+      </ul>
+      <p class="mono" style="margin-top:1.25rem">Building on Chad Fowler's Phoenix Architecture and the wider spec-driven development conversation.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <img class="portrait" src="https://github.com/pedromsantos.png?size=320" alt="Portrait of Pedro Santos" width="160" height="160" loading="lazy">
+      <p class="eyebrow">06 · get in touch</p>
+      <h2>Let's talk.</h2>
+      <p class="intro">About bringing AI agents into your engineering organisation, a workshop for your teams, or a pilot on a real slice of your product.
+        Send me a message on LinkedIn with your team size and where AI has changed your delivery so far.</p>
+      <div class="ctas">
+        <a class="btn primary" href="https://www.linkedin.com/in/pedros/">Message me on LinkedIn</a>
+      </div>
+      <p class="mono" style="margin-top:1.25rem">Also on <a href="https://github.com/pedromsantos">GitHub</a> and <a href="https://x.com/pedromsantos">X</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p class="mono">© Pedro Moreira Santos · Madrid, Spain</p>
+    <p class="mono">One HTML file. No frameworks, no trackers.</p>
+  </div>
+</footer>
 </body>
-
 </html>
-

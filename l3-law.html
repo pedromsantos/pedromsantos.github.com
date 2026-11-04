@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pedro's L3 Law: Specifications First, Code Second · Pedro Santos</title>
+<meta name="description" content="Use as many rich, iterative prompts as you need to create the specifications. Then with ONE prompt: generate the code and associated unit tests.">
+<meta property="og:title" content="Pedro's L3 Law: Specifications First, Code Second">
+<meta property="og:description" content="The specification-first discipline for Level 3 agentic engineering.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Pedro's L3 Law: Specifications First, Code Second",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] },
+  "dateModified": "2026-10-22",
+  "image": "images/pedros-law-two-loops.svg"
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">article · agentic engineering</p>
+  <h1>Pedro's L3 Law: Specifications First, Code Second</h1>
+  <p class="byline">By Pedro Santos · October 2026 · 11 min read</p>
+
+  <div class="law">
+    <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
+    <p>Then with ONE prompt: generate the code and associated unit tests.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="frame"><img src="images/pedros-law-two-loops.svg" width="1280" height="720"
+      alt="Pedro's Law, two loops. In the specs loop, humans use many prompts with AI agents to write, approve and version a specification, and review the result. In the implementation loop, the agent receives one controlled prompt, then generates, evaluates and improves the implementation within the approved specification. Every specification failure returns to the specs loop."></div>
+  </figure>
+
+  <h2 id="introduction">Introduction</h2>
+  <p>
+    Pedro's L3 Law is the specification-first discipline for Level 3 Agentic Engineering. Level 3 is not simply
+    using an AI coding assistant more often. It is a different way of organising engineering work.
+  </p>
+  <p class="aside">Yes, I named it after myself, so that nobody else gets the blame.</p>
+  <p>
+    At Level 3, agents perform complex, multi-step workflows. They inspect repositories, consult tools, create
+    implementation plans, write code, generate tests, run verification, review changes, and iterate within defined
+    quality gates. Humans decide what work to initiate, define the intended outcome, approve important boundaries,
+    and remain accountable for the result.
+  </p>
+  <p>The central shift is:</p>
+  <blockquote><p>Engineers spend less time directing individual code changes and more time designing the specifications, constraints, evaluation mechanisms, and agent workflows that produce reliable code.</p></blockquote>
+  <p>Level 3 is one step on a broader maturity model of agentic engineering.</p>
+
+  <nav class="toc" aria-label="In this article">
+    <p class="eyebrow">in this article</p>
+    <ol>
+      <li><a href="#normative-language">Normative language</a></li>
+      <li><a href="#the-law">The law</a></li>
+      <li><a href="#risk-tiers">Risk tiers</a></li>
+      <li><a href="#what-belongs">What belongs in the specification</a></li>
+      <li><a href="#prompt-local-knowledge">Prompt-local knowledge</a></li>
+      <li><a href="#implementation-loop">The controlled implementation loop</a></li>
+      <li><a href="#read-only">Read-only specifications and escalation</a></li>
+      <li><a href="#failures">Implementation failure versus specification failure</a></li>
+      <li><a href="#regenerable">Regenerable implementation</a></li>
+      <li><a href="#oracle">Testing: the oracle is not the generated unit test</a></li>
+      <li><a href="#worked-example">Worked example: a fully specified slice</a></li>
+      <li><a href="#traceability">Traceability and reproducibility</a></li>
+      <li><a href="#identifiers">Identifiers</a></li>
+      <li><a href="#workflow">Team workflow and focus</a></li>
+      <li><a href="#parallelisation">Parallelisation and Level 3</a></li>
+      <li><a href="#metrics">Adoption and health metrics</a></li>
+      <li><a href="#takeaway">Takeaway</a></li>
+      <li><a href="#confirmation">Independent confirmation</a></li>
+      <li><a href="#l3-to-l4">What next: from L3 to L4</a></li>
+      <li><a href="#resources">Resources</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="normative-language">Normative language</h2>
+  <p>
+    This article uses the following keywords as described in
+    <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a> and <a href="https://www.rfc-editor.org/rfc/rfc8174">RFC 8174</a>.
+    The keywords have these meanings only when, and only when, they appear in all capitals, as shown here.
+    Lowercase words such as "must" or "may" have their ordinary English meaning.
+  </p>
+  <ul>
+    <li><span class="keyword">MUST</span> and <span class="keyword">MUST NOT</span> are mandatory rules.</li>
+    <li><span class="keyword">SHOULD</span> and <span class="keyword">SHOULD NOT</span> are recommendations; exceptions require an explicit, documented reason.</li>
+    <li><span class="keyword">MAY</span> indicates permission or an available option.</li>
+  </ul>
+
+  <h2 id="the-law">The law</h2>
+  <p>
+    Teams MUST create durable specifications. Teams MAY use rich, iterative prompting to create them. The depth of
+    the specification MUST be proportional to the risk and complexity of the change. The risk tiers below set the
+    minimum specification for each change.
+  </p>
+  <p>Teams MUST refine specifications in thin vertical slices instead of designing the whole system upfront.</p>
+  <p>
+    Once a slice is approved, the human gives the implementation agent one controlled implementation prompt. The
+    agent then plans the change and generates the code and associated unit tests. The agent MUST run the approved
+    checks. The agent MAY iterate autonomously until the checks pass.
+  </p>
+  <p>
+    The rule is not a count of messages. The implementation prompt and its autonomous loop MUST NOT introduce new
+    requirements or design decisions. If a new requirement or design decision is needed, the agent MUST stop and
+    escalate it for specification work.
+  </p>
+
+  <h2 id="risk-tiers">Risk tiers</h2>
+  <p>
+    Each slice MUST meet the minimum specification for its risk tier. If a change matches more than one tier, use
+    the highest tier. Teams MAY adapt these tiers, but they MUST record their tiers in repository guidance.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tier</th><th>Typical changes</th><th>Minimum specification</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Low</strong></td>
+          <td>Internal refactoring, copy changes, or an isolated bug fix with no contract, data, or security impact</td>
+          <td><ul><li>Behaviour, scope, and non-scope</li><li>Boundaries that the change touches</li><li>Acceptance tests</li></ul></td>
+        </tr>
+        <tr>
+          <td><strong>Medium</strong></td>
+          <td>A new feature or endpoint in one service, a change to an internal contract, or a new dependency</td>
+          <td>Everything in Low, plus:<ul><li>Interface or API contract</li><li>Error and edge cases</li><li>Fitness checks</li><li>An ADR for each architecture decision</li></ul></td>
+        </tr>
+        <tr>
+          <td><strong>High</strong></td>
+          <td>Public contracts, data schemas, security controls, sensitive data, infrastructure, cross-service or cross-team changes, or significant cost or capacity changes</td>
+          <td>Everything in Medium, plus:<ul><li>Architecture and ADRs</li><li>Security, privacy, and compliance requirements</li><li>Observability requirements</li><li>Deployment, rollback, and recovery</li><li>A named human approver</li></ul></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="what-belongs">What belongs in the specification</h2>
+  <p>Depending on risk, specifications MAY include:</p>
+  <ul>
+    <li>Functional and non-functional requirements</li>
+    <li>Scope and non-scope</li>
+    <li>Logical and physical architecture</li>
+    <li>System, service, data, and team boundaries</li>
+    <li>Architecture Decision Records</li>
+    <li>Security, privacy, and compliance requirements</li>
+    <li>Observability and operational expectations</li>
+    <li>Deployment, rollback, and recovery expectations</li>
+    <li>Milestones and implementation sequencing</li>
+    <li>Acceptance, end-to-end, contract, and fitness tests</li>
+    <li>Failure scenarios and measurable quality thresholds</li>
+  </ul>
+  <p>
+    Prompts are valuable for exploring the problem, researching the repository, comparing architecture options,
+    challenging assumptions, generating diagrams, drafting ADRs, defining tests, identifying risks, and finding
+    contradictions.
+  </p>
+  <p>
+    The resulting decisions MUST be moved into durable artifacts such as requirements, diagrams, ADRs, repository
+    guidance, security policies, test specifications, acceptance criteria, fitness functions, configuration,
+    runbooks, evaluation datasets, or review checklists.
+  </p>
+  <p>If a prompt contains a decision that matters after the current session, move that decision into a durable specification or executable check.</p>
+
+  <h2 id="prompt-local-knowledge">Prompt-local knowledge</h2>
+  <p>
+    When multiple prompts are used directly to generate or modify code, important knowledge may remain only in
+    conversation context, an agent session, tool output, uncommitted changes, review comments, generated code, or
+    an agent transcript.
+  </p>
+  <p>
+    This creates <em>prompt-local knowledge</em>: knowledge that influenced the implementation but cannot reliably
+    be recovered, evaluated, or reused.
+  </p>
+  <p>
+    For example, an early prompt may establish that a service must use a repository abstraction rather than call a
+    database directly. A later prompt may bypass that boundary to fix a failing test. If the original decision
+    existed only in the conversation, the architectural knowledge can be lost or contradicted.
+  </p>
+  <p>Ask:</p>
+  <blockquote><p>If this prompt disappears, where is the knowledge it introduced?</p></blockquote>
+  <p>
+    If the answer is nowhere durable, the team has not finished engineering the decision. Prompts are useful for
+    thinking, but they are not a sufficient system of record.
+  </p>
+
+  <h2 id="implementation-loop">The controlled implementation loop</h2>
+  <p>The implementation agent receives the approved specification, repository context, and read-only quality gates. It then:</p>
+  <ol>
+    <li>Reads the approved specification.</li>
+    <li>Inspects the repository and relevant systems.</li>
+    <li>Produces an implementation plan.</li>
+    <li>Generates the code and associated unit tests.</li>
+    <li>Runs the required checks.</li>
+    <li>Compares the result with the approved acceptance criteria.</li>
+    <li>Corrects implementation defects within the approved design.</li>
+    <li>Repeats until the quality gates pass.</li>
+    <li>Opens a change for human review.</li>
+  </ol>
+  <p>
+    The human gives one implementation instruction. The agent MAY perform multiple autonomous iterations inside
+    that instruction; those iterations are not new design conversations.
+  </p>
+
+  <h2 id="read-only">Read-only specifications and escalation</h2>
+  <p>
+    The implementation agent MUST NOT modify the approved requirements, acceptance tests, fitness functions,
+    security boundaries, or architectural decisions in order to make the implementation pass.
+  </p>
+  <p>Read-only status MUST be enforced by mechanisms in addition to prompt instructions. Teams SHOULD use an appropriate combination of:</p>
+  <ul>
+    <li>Protected paths and CODEOWNERS for specifications and oracle files</li>
+    <li>CI checks that fail when an implementation change modifies protected specification or oracle files</li>
+    <li>Agent sandbox permissions that remove write access to those paths</li>
+    <li>Separate repositories or branches for approved specifications where appropriate</li>
+    <li>Human approval gates for changes to requirements, acceptance tests, fitness functions, or ADRs</li>
+  </ul>
+  <p>If the agent suspects that the specification is contradictory, incomplete, impossible, or unsafe, it MUST stop and escalate.</p>
+  <p>The escalation MUST use one format, which the team records in its repository guidance. At minimum, the agent MUST:</p>
+  <ul>
+    <li>Stop work on the change and not request a merge.</li>
+    <li>Open a draft pull request, or add a comment to the linked ticket, with the label <code>spec-question</code>.</li>
+    <li>Notify the specification owner.</li>
+    <li>Include the specification ID and version.</li>
+    <li>Quote the conflicting, missing, or unsafe clauses.</li>
+    <li>Attach the evidence, such as a failing check, test output, or a repository constraint.</li>
+    <li>List the options that the agent found and the effect of each option.</li>
+    <li>State whether the agent considers the issue an implementation failure or a specification failure.</li>
+  </ul>
+  <p>The agent's classification is a proposal only. A human MUST classify the issue and either:</p>
+  <ul>
+    <li>Confirm that the specification is correct and direct the agent to fix the implementation; or</li>
+    <li>Revise and version the specification, then restart or regenerate the change.</li>
+  </ul>
+  <p>The agent MUST NOT weaken a test, bypass a boundary, or silently reinterpret a requirement.</p>
+
+  <h2 id="failures">Implementation failure versus specification failure</h2>
+  <h3>Implementation failure</h3>
+  <p>
+    The specification is correct, but the generated implementation does not satisfy it. Examples include incorrect
+    control flow, missing error handling, a bug exposed by a test, violation of a repository pattern, or failure to
+    meet a defined threshold. The agent MUST correct the implementation within the approved specification.
+  </p>
+  <h3>Specification failure</h3>
+  <p>
+    The implementation exposes a problem in the requirements or design. Examples include contradictory
+    requirements, an architecture that cannot support the required scale, ambiguous acceptance criteria, an omitted
+    security boundary, or an impossible operational expectation. The agent MUST stop and escalate; the team MUST
+    revise and version the specification before regenerating the change.
+  </p>
+
+  <h2 id="regenerable">Regenerable implementation</h2>
+  <p>
+    Generated implementation is regenerable, not immutable. The code is disposable output of a versioned
+    specification and a controlled generation process.
+  </p>
+  <p>For an unmerged change, regeneration MUST follow this process:</p>
+  <ol>
+    <li>Identify the specification version and repository baseline.</li>
+    <li>Record any human review edits that are not already represented in the specification.</li>
+    <li>Discard the branch or change set for the affected slice.</li>
+    <li>Update and approve the revised specification, if required.</li>
+    <li>Regenerate the change set from the approved specification version.</li>
+    <li>Re-run the quality gates and review the resulting diff.</li>
+  </ol>
+  <p>
+    Human edits made during review MUST either be incorporated into the specification before regeneration or be
+    explicitly recorded as an approved manual change that will not be regenerated.
+  </p>
+  <p>
+    The scope of regeneration SHOULD be the affected change set or thin vertical slice, not the entire product or
+    repository. If other changes have merged on top, the team MUST rebase or recreate the branch from the new
+    baseline and regenerate only the impacted slice.
+  </p>
+  <p>
+    If the original change is already merged into main, regeneration does not rewrite history. It creates a new
+    change set on top of the existing code, linked to the revised specification version and the earlier change.
+  </p>
+  <p>
+    The regenerated output does not need to be identical. Regeneration success means that the new change passes the
+    same approved quality gates and remains traceable to the specification; it does not mean that the generated
+    code is textually identical.
+  </p>
+
+  <h2 id="oracle">Testing: the oracle is not the generated unit test</h2>
+  <p>
+    The human-approved acceptance tests and fitness functions are the oracle. Generated unit tests support the
+    implementation and provide regression protection, but passing generated unit tests is not evidence that the
+    feature satisfies the acceptance criteria.
+  </p>
+  <p>
+    Generated unit tests MUST NOT contradict the approved acceptance tests or fitness functions. The team MUST
+    evaluate the implementation against the approved behavioural oracle separately.
+  </p>
+  <p>
+    This is compatible with test-first engineering when the team defines acceptance and fitness tests before
+    implementation. The agent MAY generate unit tests after or alongside the code, but it MUST NOT change the oracle
+    merely because the generated implementation fails it.
+  </p>
+
+  <h2 id="worked-example">Worked example: a fully specified slice</h2>
+  <div class="example">
+    <h3>Approved specification</h3>
+    <dl>
+      <dt>ID and version</dt><dd><code>orders-api/list-open-orders@v5</code></dd>
+      <dt>Risk tier</dt><dd>Medium</dd>
+      <dt>Goal</dt><dd>Add a read-only endpoint that returns the authenticated customer's open orders.</dd>
+      <dt>Path</dt><dd><code>GET /v1/customers/me/orders</code></dd>
+      <dt>Authentication</dt><dd>A valid customer identity is required. Missing or invalid authentication returns 401 using the service's standard error schema: <code>{ "code": "UNAUTHENTICATED", "message": "..." }</code>.</dd>
+      <dt>Open definition</dt><dd>An order is open when <code>status = OPEN</code>. Orders with any other status are excluded.</dd>
+      <dt>Ownership</dt><dd>The service derives the customer ID from the authenticated identity. There is no customer ID in the path, so another customer's orders cannot be requested through this endpoint.</dd>
+      <dt>No orders</dt><dd>Return 200 with an empty <code>items</code> array.</dd>
+      <dt>Response</dt><dd>Return 200 with <code>{ "items": [{ "id": "...", "name": "...", "status": "OPEN" }], "nextCursor": null }</code>.</dd>
+      <dt>Order</dt><dd>Sort results in ascending order by <code>id</code>. This order is stable across pages.</dd>
+      <dt>Pagination</dt><dd>Accept optional <code>limit</code> and <code>cursor</code> query parameters. Use the service's documented pagination defaults and cursor conventions. On the last page, <code>nextCursor</code> is null. Return 400 using the standard error schema for invalid pagination parameters.</dd>
+      <dt>Boundary</dt><dd>The API MUST use the existing <code>OrderRepository</code>; it MUST NOT access the database directly or introduce a new database dependency in the API layer. See <code>ADR-20261009T1530Z-order-repository-boundary</code>.</dd>
+    </dl>
+
+    <h3>Acceptance tests</h3>
+    <ul>
+      <li>An authenticated customer receives only that customer's open orders.</li>
+      <li>Orders that are not open are excluded.</li>
+      <li>No orders returns 200 with <code>items: []</code>.</li>
+      <li>Missing or invalid authentication returns 401 with the standard error shape.</li>
+      <li>Valid pagination returns the next page in ascending <code>id</code> order, with a <code>nextCursor</code> that follows the service's documented cursor conventions.</li>
+      <li>The last page returns <code>nextCursor: null</code>.</li>
+      <li>Invalid pagination returns 400 with the standard error shape.</li>
+    </ul>
+
+    <h3>Fitness checks</h3>
+    <ul>
+      <li>The endpoint has no direct database import or database client construction.</li>
+      <li>The endpoint uses <code>OrderRepository</code>.</li>
+      <li>Protected specification and oracle files are unchanged by the implementation change.</li>
+    </ul>
+  </div>
+
+  <h3>Controlled implementation prompt</h3>
+  <pre><code>Implement orders-api/list-open-orders@v5 in the current repository from the
+approved specification and repository context. Generate the production code and
+associated unit tests. Run the approved acceptance and fitness checks. You MAY
+correct implementation defects, but you MUST NOT add requirements, change the
+acceptance tests or fitness functions, bypass the repository boundary, or make
+new architecture decisions. Stop and escalate if the specification is
+incomplete, contradictory, or cannot be implemented safely.</code></pre>
+  <p>
+    The prompt is deliberately small because the design decisions already exist in the specification. The agent
+    can iterate internally, but it cannot turn implementation feedback into an unapproved design change.
+  </p>
+
+  <h2 id="traceability">Traceability and reproducibility</h2>
+  <p>Every generated change MUST be traceable to a concrete location. The team's pull request template MUST include, at minimum:</p>
+  <pre><code>Spec:       orders-api/list-open-orders@v5
+ADR:        ADR-20261009T1530Z-order-repository-boundary   (required when an ADR applies)
+Prompt:     &lt;prompt template ID@version&gt;
+Baseline:   &lt;repository commit&gt;
+Agent:      &lt;agent/tool version&gt;
+Model:      &lt;model version&gt;
+Generated:  &lt;UTC timestamp&gt;
+Evaluation: &lt;link to evaluation report&gt;</code></pre>
+  <p>
+    Each pull request MUST link to the specification commit. When an ADR applies, the pull request MUST also link
+    to the ADR ID. The evaluation report SHOULD be attached to the pull request or stored with the change record.
+  </p>
+  <p>
+    Reproducibility means that another run can use the recorded specification, baseline, prompt template, model,
+    and agent metadata to reproduce the evaluation process and determine whether the same approved gates pass. It
+    does not require identical generated code.
+  </p>
+
+  <h2 id="identifiers">Identifiers</h2>
+  <p>
+    Specification and ADR identifiers MUST be unique without coordination between branches. Teams MUST NOT use
+    sequential numbers as identifiers. When two branches or parallel agents each create a record, both take the
+    next free number, and the second merge produces a conflict or a duplicate ID.
+  </p>
+  <p>Use one of these formats:</p>
+  <ul>
+    <li><strong>ADRs:</strong> a UTC timestamp and a slug, for example <code>ADR-20261009T1530Z-order-repository-boundary</code>. The timestamp keeps the records in chronological order.</li>
+    <li><strong>Specifications:</strong> a domain path and a slug, for example <code>orders-api/list-open-orders</code>, with the version appended as <code>@vN</code>.</li>
+  </ul>
+  <p>
+    The <code>@vN</code> version suffix is sequential by design. A version conflict occurs only when two branches
+    change the same specification. That is a real design conflict, and a human MUST resolve it.
+  </p>
+  <p>
+    Teams SHOULD generate ADR and specification indexes in CI and SHOULD NOT edit them by hand, because a shared
+    index file also causes merge conflicts.
+  </p>
+
+  <h2 id="workflow">Team workflow and focus</h2>
+  <p>Teams SHOULD use this workflow:</p>
+  <ol>
+    <li><strong>Frame the outcome:</strong> define the goal, scope, boundaries, risks, and success measures.</li>
+    <li><strong>Specify a thin slice:</strong> use agents to research, challenge assumptions, draft requirements and architecture, define the oracle, and resolve contradictions. Humans approve the specification.</li>
+    <li><strong>Generate and evaluate:</strong> give the agent one controlled implementation instruction. Let it generate, test, iterate, and produce evidence within the approved design.</li>
+    <li><strong>Review and deliver:</strong> humans review the change and evidence, resolve escalations, and approve merge or deployment at the appropriate risk boundary.</li>
+    <li><strong>Improve the system:</strong> record newly discovered decisions, update repository guidance, improve quality gates, and remove recurring manual steps.</li>
+  </ol>
+  <p>The team's scarce human time belongs primarily in the specs loop:</p>
+  <ul>
+    <li>Clarifying outcomes and boundaries</li>
+    <li>Making architecture and security decisions</li>
+    <li>Defining the behavioural oracle</li>
+    <li>Creating reliable repository context</li>
+    <li>Establishing enforcement and approval gates</li>
+    <li>Learning from implementation failures and improving the workflow</li>
+  </ul>
+
+  <h2 id="parallelisation">Parallelisation and Level 3</h2>
+  <p>
+    Level 3 enables engineers to coordinate agents working in parallel: researching architecture, drafting ADRs,
+    identifying security requirements, proposing test scenarios, investigating dependencies, preparing
+    implementation plans, generating implementations, and evaluating changes.
+  </p>
+  <p>
+    Parallelisation works only when agents share durable specifications, contracts, and evaluation criteria.
+    Otherwise, multiple agents create inconsistent interpretations of the problem.
+  </p>
+  <blockquote><p>Parallel agents increase the value of shared specifications, contracts, and evaluation criteria.</p></blockquote>
+
+  <h2 id="metrics">Adoption and health metrics</h2>
+  <p>Teams SHOULD start with these primary metrics:</p>
+  <dl>
+    <dt>Specification traceability</dt><dd>Percentage of implementation pull requests linked to a specification version.</dd>
+    <dt>Human corrective prompts</dt><dd>Number of human prompts per pull request after the implementation instruction. Each corrective prompt shows that the specification or the repository context failed.</dd>
+    <dt>Regeneration success</dt><dd>Percentage of regenerated change sets that pass the same approved quality gates.</dd>
+    <dt>Post-merge defects</dt><dd>Defects found after merge or deployment that the specification or quality gates did not catch.</dd>
+  </dl>
+  <p>
+    Teams MAY add diagnostic metrics such as autonomous iterations per pull request, escalations per specification,
+    specification revisions caused by implementation failures, review rework, time from specification approval to
+    reviewed change, and reproducibility of the evaluation record. Autonomous iterations are a normal part of the
+    loop and are not a health signal on their own. Metrics exist to improve the system, not to reward teams for
+    minimising prompts at the expense of quality.
+  </p>
+
+  <div class="takeaway">
+    <h2 id="takeaway">Takeaway</h2>
+    <div class="law">
+      <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
+      <p>Then with only ONE prompt: generate the code and associated unit tests.</p>
+    </div>
+  </div>
+
+
+  <h2 id="confirmation">Independent confirmation</h2>
+  <p>
+    In October 2026, Google open-sourced the
+    <a href="https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html">Elephant-Goldfish Model</a>,
+    a plugin that thousands of its engineers use to design software with AI agents. A long-running "elephant" agent
+    holds the project context and drafts the specification. Stateless "goldfish" reviewers, with none of the earlier
+    conversation, stress-test it for unstated assumptions and gaps. A human resolves the trade-offs and approves the
+    design before any code is written.
+  </p>
+  <p>
+    That is the specs loop, arrived at independently and used at scale. It is a good sign that the idea is worth
+    pursuing: when generation gets cheap, the leverage moves to the specification.
+  </p>
+  <p>
+    The two approaches cover different halves of the work. The Elephant-Goldfish Model strengthens how a
+    specification is written and challenged. The L3 Law governs what happens after approval: one controlled
+    implementation prompt, an oracle the agent cannot edit, escalation instead of improvisation, and code that can be
+    regenerated from the versioned specification. They fit together.
+  </p>
+
+  <h2 id="l3-to-l4">What next: from L3 to L4</h2>
+  <figure class="wide">
+    <div class="frame"><img src="images/pedros-law-three-loops.svg" width="1600" height="900" loading="lazy"
+      alt="Pedro's Law, three loops. The production loop attaches to Merge: CI/CD ships the change, live evaluation watches it against SLOs, and a rollback, automatic on a breach or triggered by a human, redeploys the last stable version. The root cause always goes back to specification work, never straight to the implementation loop. Telemetry and business events from the stable version feed a spec mining agent that proposes spec changes, closing the loop."></div>
+    <figcaption>Three loops: specs, implementation and production, with production data feeding back into the specs.</figcaption>
+  </figure>
+  <p>
+    Pedro's L3 Law has two loops. The specs loop is humans: write and approve the specification. The
+    implementation loop is the agent: generate, evaluate, and fix the implementation inside one controlled prompt.
+  </p>
+  <p>
+    The production loop is the third loop. CI/CD ships the merged change. Live evaluation watches it against SLOs.
+    A rollback, triggered automatically on a breach or manually by a human, redeploys the previous stable version
+    through CI/CD. The root cause then always goes back to the specs loop, never straight to the implementation
+    loop. If a defect reached production, the specification and its evaluations missed it. The team fixes the
+    specification first, then regenerates the change. A low-risk change can also skip human review on the way to merge.
+  </p>
+  <p>
+    A fourth path closes the system. The stable version produces telemetry and business events. Together they form
+    its operational and analytical data. A mining agent reads this data and proposes spec changes, back into the
+    specs loop.
+  </p>
+  <p>
+    This is the move from L3 to L4. L3 governs how code is generated from an approved spec. L4 adds how the running
+    system is observed, protected, and improved. Humans still approve every change to the specification.
+  </p>
+
+  <h2 id="resources">Resources</h2>
+  <ul class="resources">
+    <li><a href="https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html">Understanding Spec-Driven-Development: Kiro, spec-kit, and Tessl</a></li>
+    <li><a href="https://yuvalyeret.com/blog/is-spec-driven-development-a-step-forward-or-back-for-product-development/">Is Spec-Driven Development a Step Forward or Back?</a>, Yuval Yeret</li>
+    <li><a href="https://lexler.github.io/augmented-coding-patterns/">Augmented Coding Patterns</a></li>
+    <li><a href="https://aicoding.leaflet.pub/">The Phoenix Architecture</a>, Chad Fowler</li>
+    <li><a href="https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html">Introducing the Elephant-Goldfish Model plugin</a>, Google Open Source Blog</li>
+    <li><a href="https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction">What changes and where to start · The AI-native SDLC playbook</a>, Claude Academy</li>
+  </ul>
+
+  <div class="cta">
+    <p>Want to bring this way of working to your teams?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>

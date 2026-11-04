@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-labelledby="two-loops-title two-loops-desc">
+  <title id="two-loops-title">Pedro's Law: two loops</title>
+  <desc id="two-loops-desc">Two nested loops. In the specs loop, humans use many prompts with AI agents to write, approve, and version a specification, and they review the result. In the implementation loop, the agent receives one controlled prompt, then generates, evaluates, and improves the implementation within the approved specification. Every specification failure returns to the specs loop.</desc>
+  <defs>
+    <marker id="tl-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+    <marker id="tl-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+    <marker id="tl-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+    <style>
+            .n { font: 600 16px 'Geist', system-ui, sans-serif; }
+      .s { font: 400 12px 'Geist Mono', ui-monospace, monospace; fill: #4f5d75; }
+      .a { font: 500 12px 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; }
+      .eb { font: 500 12px 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.14em; }
+      .t { font: 400 40px 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; fill: #2d3142; }
+      .h { font: 400 28px 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif; fill: #2d3142; }
+      .b { font: 400 16px 'Geist', system-ui, sans-serif; fill: #4f5d75; }
+      .lg { font: 400 12px 'Geist Mono', ui-monospace, monospace; fill: #4f5d75; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f5f5f5"/>
+
+  <!-- ring tints -->
+  <ellipse cx="460" cy="352" rx="332" ry="264" fill="#eaf0fa" opacity="0.55"/>
+  <circle cx="460" cy="352" r="200" fill="#ffffff" opacity="0.9"/>
+
+  <!-- specs loop: humans (link blue) -->
+  <path d="M 340.049 105.833 A 332 264 0 0 0 130.611 318.954" fill="none" stroke="#2e5aa8" stroke-width="2" marker-end="url(#tl-arrow-link)"/><path d="M 130.447 383.991 A 332 264 0 0 0 354.761 602.386" fill="none" stroke="#2e5aa8" stroke-width="2" marker-end="url(#tl-arrow-link)"/><path d="M 789.553 320.009 A 332 264 0 0 0 581.197 106.219" fill="none" stroke="#2e5aa8" stroke-width="2" marker-end="url(#tl-arrow-link)"/>
+  <!-- self-loop: many prompts between humans and agents -->
+  <path d="M 424 56 C 402 6 518 6 496 56" fill="none" stroke="#2e5aa8" stroke-width="2" marker-end="url(#tl-arrow-link)"/>
+  <!-- implementation loop: agent (muted) -->
+  <path d="M 555.997 453.905 A 140 140 0 0 0 598.728 333.172" fill="none" stroke="#4f5d75" stroke-width="2" marker-end="url(#tl-arrow)"/><path d="M 538.388 236.003 A 140 140 0 0 0 371.840 243.244" fill="none" stroke="#4f5d75" stroke-width="2" marker-end="url(#tl-arrow)"/><path d="M 322.830 323.993 A 140 140 0 0 0 363.133 453.078" fill="none" stroke="#4f5d75" stroke-width="2" marker-end="url(#tl-arrow)"/>
+
+  <!-- entry, exits, and escalation -->
+  <path d="M 460 584.0 L 460 533.2" fill="none" stroke="#eb6c36" stroke-width="2.4" marker-end="url(#tl-arrow-accent)"/>
+  <path d="M 632 236.0 L 632 176 A 8 8 0 0 0 624 168 L 548 168 A 8 8 0 0 1 540 160 L 540 121.2" fill="none" stroke="#eb6c36" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#tl-arrow-accent)"/>
+  <path d="M 676.0 272 L 744 272 A 8 8 0 0 1 752 280 L 752 318.8" fill="none" stroke="#eb6c36" stroke-width="2.4" marker-end="url(#tl-arrow-accent)"/>
+  <path d="M 792 384.0 L 792 446.8" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#tl-arrow)"/>
+
+  <!-- labels -->
+  <rect x="285.0" y="540" width="167" height="16" rx="2" fill="#f5f5f5"/><text x="448" y="552" class="a" fill="#eb6c36" text-anchor="end">ONE CONTROLLED PROMPT</text>
+  <rect x="404" y="120" width="128" height="40" rx="2" fill="#f5f5f5" opacity="0"/>
+  <text x="528" y="140" class="a" fill="#eb6c36" text-anchor="end">SPEC FAILURE:</text>
+  <text x="528" y="156" class="a" fill="#eb6c36" text-anchor="end">STOP · ESCALATE</text>
+  <rect x="681" y="240" width="78" height="30" rx="2" fill="#f5f5f5"/><text x="720" y="252" class="a" fill="#eb6c36" text-anchor="middle">EVALUATION</text><text x="720" y="268" class="a" fill="#eb6c36" text-anchor="middle">PASS</text>
+  <rect x="398.0" y="184" width="124" height="16" rx="2" fill="#f5f5f5"/><text x="460" y="196" class="a" fill="#7a8399" text-anchor="middle">EVALUATION FAIL</text>
+  <rect x="800.0" y="408" width="64" height="16" rx="2" fill="#f5f5f5"/><text x="804" y="420" class="a" fill="#7a8399" text-anchor="start">APPROVE</text>
+  <rect x="160.5" y="572" width="71" height="16" rx="2" fill="#f5f5f5"/><text x="196" y="584" class="a" fill="#2e5aa8" text-anchor="middle">APPROVED</text>
+  <rect x="717.5" y="152" width="101" height="16" rx="2" fill="#f5f5f5"/><text x="768" y="164" class="a" fill="#2e5aa8" text-anchor="middle">SPEC FAILURE</text>
+
+  <!-- loop names -->
+  <text x="460" y="368" class="eb" fill="#4f5d75" text-anchor="middle">IMPLEMENTATION LOOP</text>
+  <text x="460" y="392" class="n" fill="#2d3142" text-anchor="middle">one controlled prompt</text>
+  <text x="460" y="412" class="s" text-anchor="middle">run by the agent</text>
+  <text x="640" y="536" class="eb" fill="#2e5aa8" text-anchor="middle">SPECS LOOP</text>
+  <text x="640" y="556" class="s" fill="#2e5aa8" text-anchor="middle" style="fill:#2e5aa8">humans · many prompts</text>
+
+  <!-- nodes -->
+  <rect x="340.0" y="56.0" width="240" height="64" rx="6" fill="#f5f5f5"/>
+<rect x="340.0" y="56.0" width="240" height="64" rx="6" fill="#ffffff" stroke="#2e5aa8" stroke-width="1.6"/>
+<text x="460.0" y="86.0" class="n" fill="#2d3142" text-anchor="middle">Specification work</text>
+<text x="460.0" y="106.0" class="s" text-anchor="middle">many prompts with agents</text>
+  <rect x="40.0" y="320.0" width="176" height="64" rx="6" fill="#f5f5f5"/>
+<rect x="40.0" y="320.0" width="176" height="64" rx="6" fill="#ffffff" stroke="#2e5aa8" stroke-width="1.6"/>
+<text x="128.0" y="350.0" class="n" fill="#2d3142" text-anchor="middle">Human approval</text>
+<text x="128.0" y="370.0" class="s" text-anchor="middle">gaps → more work</text>
+  <rect x="356.0" y="584.0" width="208" height="64" rx="6" fill="#f5f5f5"/>
+<rect x="356.0" y="584.0" width="208" height="64" rx="6" fill="rgba(45,49,66,0.06)" stroke="#2e5aa8" stroke-width="1.6"/>
+<text x="460.0" y="614.0" class="n" fill="#2d3142" text-anchor="middle">Versioned spec</text>
+<text x="460.0" y="634.0" class="s" text-anchor="middle">read-only · @v5</text>
+  <rect x="704.0" y="320.0" width="176" height="64" rx="6" fill="#f5f5f5"/>
+<rect x="704.0" y="320.0" width="176" height="64" rx="6" fill="#ffffff" stroke="#2e5aa8" stroke-width="1.6"/>
+<text x="792.0" y="350.0" class="n" fill="#2d3142" text-anchor="middle">Human review</text>
+<text x="792.0" y="370.0" class="s" text-anchor="middle">evidence + diff</text>
+  <rect x="364.0" y="452.0" width="192" height="80" rx="6" fill="#f5f5f5"/>
+<rect x="364.0" y="452.0" width="192" height="80" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+<text x="460.0" y="478.0" class="n" fill="#2d3142" text-anchor="middle">Generate</text>
+<text x="460.0" y="498.0" class="n" fill="#2d3142" text-anchor="middle">Implementation</text>
+<text x="460.0" y="518.0" class="s" text-anchor="middle">unit tests + code</text>
+  <rect x="484.0" y="236.0" width="192" height="112" rx="6" fill="#f5f5f5"/>
+<rect x="484.0" y="236.0" width="192" height="112" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+<text x="580.0" y="261.0" class="n" fill="#2d3142" text-anchor="middle">Evaluate</text>
+<text x="580.0" y="281.0" class="n" fill="#2d3142" text-anchor="middle">Implementation</text>
+<text x="580.0" y="301.0" class="s" text-anchor="middle">e2e · acceptance</text>
+<text x="580.0" y="317.0" class="s" text-anchor="middle">integration · fitness</text>
+<text x="580.0" y="333.0" class="s" text-anchor="middle">mutation</text>
+  <rect x="244.0" y="244.0" width="192" height="80" rx="6" fill="#f5f5f5"/>
+<rect x="244.0" y="244.0" width="192" height="80" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+<text x="340.0" y="270.0" class="n" fill="#2d3142" text-anchor="middle">Improve</text>
+<text x="340.0" y="290.0" class="n" fill="#2d3142" text-anchor="middle">Implementation</text>
+<text x="340.0" y="310.0" class="s" text-anchor="middle">within the approved spec</text>
+  <rect x="728.0" y="448.0" width="128" height="56" rx="6" fill="#f5f5f5"/>
+<rect x="728.0" y="448.0" width="128" height="56" rx="6" fill="#ececec" stroke="#7a8399" stroke-width="1.2"/>
+<text x="792.0" y="482.0" class="n" fill="#2d3142" text-anchor="middle">Merge</text>
+
+  <!-- editorial panel -->
+  <text x="928" y="72" class="eb" fill="#4f5d75">PEDRO'S LAW</text>
+  <text x="928" y="116" class="t">Two loops.</text>
+
+  <circle cx="934" cy="172" r="4" fill="#2e5aa8"/>
+  <text x="948" y="176" class="eb" fill="#2e5aa8">SPECS LOOP · HUMANS</text>
+  <text x="928" y="212" class="h">Many prompts.</text>
+  <text x="928" y="240" class="b">Research, draft, challenge, decide.</text>
+  <text x="928" y="260" class="b">Approve one versioned spec.</text>
+  <text x="928" y="280" class="b">Output: scope, reqs, architecture,</text>
+  <text x="928" y="300" class="b">boundaries, ADRs, security,</text>
+  <text x="928" y="320" class="b">observability, deployment,</text>
+  <text x="928" y="340" class="b">milestones, tests, thresholds.</text>
+
+  <circle cx="934" cy="372" r="4" fill="#2d3142"/>
+  <text x="948" y="376" class="eb" fill="#2d3142">IMPLEMENTATION LOOP · AGENT</text>
+  <text x="928" y="412" class="h">One prompt.</text>
+  <text x="928" y="440" class="b">Generate, run the gates, fix</text>
+  <text x="928" y="460" class="b">implementation failures — no new</text>
+  <text x="928" y="480" class="b">requirements, no new decisions.</text>
+  <text x="928" y="500" class="b">Output: code, tests, evidence.</text>
+
+  <circle cx="934" cy="532" r="4" fill="#eb6c36"/>
+  <text x="948" y="536" class="eb" fill="#eb6c36">THE RULE</text>
+  <text x="928" y="572" class="h">Fix the spec,</text>
+  <text x="928" y="604" class="h">not the code.</text>
+  <text x="928" y="632" class="b">A specification failure never becomes</text>
+  <text x="928" y="652" class="b">a code patch. It goes back outside.</text>
+
+  <!-- legend -->
+  <line x1="40" y1="672" x2="1240" y2="672" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+  <text x="40" y="700" class="eb" fill="#4f5d75">LEGEND</text>
+  <line x1="136" y1="696" x2="168" y2="696" stroke="#2e5aa8" stroke-width="2"/>
+  <text x="176" y="700" class="lg">specs loop · humans</text>
+  <line x1="340" y1="696" x2="372" y2="696" stroke="#4f5d75" stroke-width="2"/>
+  <text x="380" y="700" class="lg">implementation loop · agent</text>
+  <line x1="600" y1="696" x2="632" y2="696" stroke="#eb6c36" stroke-width="2.4"/>
+  <text x="640" y="700" class="lg">the two moves that matter</text>
+  <line x1="848" y1="696" x2="880" y2="696" stroke="#eb6c36" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="888" y="700" class="lg">escalation, not a patch</text>
+</svg>
