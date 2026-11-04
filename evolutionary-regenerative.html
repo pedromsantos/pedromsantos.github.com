@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evolutionary Architecture Meets Regenerative Software · Pedro Santos</title>
+<meta name="description" content="What does "safely change" mean when AI can regenerate entire implementations in minutes? Evolutionary architecture and regenerative software arrive at the same place: architecture is the durable asset.">
+<meta property="og:title" content="Evolutionary Architecture Meets Regenerative Software">
+<meta property="og:description" content="In both traditions, architecture is the durable asset.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Evolutionary Architecture Meets Regenerative Software",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">article · evolutionary architecture</p>
+  <h1>Evolutionary Architecture Meets Regenerative Software</h1>
+  <p class="byline">By Pedro Santos · 9 min read</p>
+  <div class="epigraph"><blockquote><p><em>“Generative AI coding demands what we've always known: modularity, clear boundaries, disposable components. Principles that scaled human teams are now table stakes. Here, we make the implicit explicit.”</em></p><p>"Regeneration isn't starting over. What's preserved is the system's identity: its behavior, its contracts, its accumulated architectural decisions. What's discarded is the implementation, which was always less important than we treated it."</p><p class="attrib">— Chad Fowler, <a href="https://aicoding.leaflet.pub/"><em>The Phoenix Architecture</em></a></p></blockquote></div>
+
+<p><strong>What does "safely change" mean when AI can regenerate entire implementations in minutes?</strong></p>
+<p>If code is cheap to recreate, what actually needs to be preserved? And what does evolutionary architecture look like when evolution can happen at the speed of a prompt?</p>
+<hr>
+<h2 id="two-traditions-one-destination">Two Traditions, One Destination</h2>
+<p>Evolutionary architecture and regenerative software arrive at the same place from opposite directions.</p>
+<p>Evolutionary architecture starts from the problem of <em>change over time</em>. Your requirements will shift. Your team will grow. Your understanding of the domain will deepen. The question is whether your system can absorb those changes without breaking. The answer is: yes, if you enforce boundaries, delay binding, and build in automated checks that prevent the system from drifting from its intended shape.</p>
+<p>Regenerative software starts from the problem of <em>disposability</em>. If AI can produce correct code from specifications in minutes, then code is no longer the scarce resource worth protecting. What matters is what survives code deletion: the behavioral contracts, the architectural constraints, the reasons decisions were made. The question is whether your system can be reborn without losing its identity.</p>
+<p>The convergence point: <strong>in both traditions, architecture is the durable asset</strong>.</p>
+<p>Implementation is transient. Boundaries are not. Fitness functions are not. ADRs are not. The Four Dimensions — internal organization, topology, communication style, domain modeling depth — are not.</p>
+<p>Fowler's framing in <a href="https://aicoding.leaflet.pub/3mgfsrk75ac2l"><em>Compile to Architecture</em></a> is worth quoting directly:</p>
+<blockquote><p>"In a regenerative system the architecture becomes the compilation target. Code becomes a build artifact produced to satisfy architectural constraints."</p></blockquote>
+<p>This is what the evolutionary framework has been building toward all along. Bounded contexts, fitness functions, ADRs — these aren't process overhead. They're the specification layer that makes safe regeneration possible. They're what code compiles <em>to</em>.</p>
+<hr>
+<h2 id="what-evolutionary-architecture-gets-right">What Evolutionary Architecture Gets Right</h2>
+<p>Evolutionary architecture turns out to be well-suited to the regenerative era, not by accident but by design.</p>
+<p><strong>Bounded contexts as containment boundaries.</strong> Context boundaries limit AI's blast radius. But Fowler's framing in <a href="https://aicoding.leaflet.pub/3mjfruwwuck2d"><em>The Phoenix Primitives</em></a> goes further. Context boundaries aren't just organizational conveniences — they define the seams along which regeneration happens independently:</p>
+<p>We’ll call these four the Phoenix Primitives—specification, evaluation, context boundary, and provenance—the durable artifacts you must preserve if you want to delete and regenerate implementations without losing the system’s identity.</p>
+<blockquote><p>"The most consequential design decisions in a regenerative system aren't about how code is structured internally. The decisions that matter are where you draw context boundaries."</p></blockquote>
+<p>Get the boundaries wrong, and you've coupled regeneration units that should be independent. Get them right, and each bounded context can be reborn on its own schedule.</p>
+<p><strong>Fitness functions as a durable evaluation.</strong> In the evolutionary frame, fitness functions act as governance — automated checks that prevent architectural drift. In the regenerative frame, they become something more fundamental. Fowler calls them "durable evaluations": the artifacts that encode what the system must do, independent of how any particular implementation does it.</p>
+<p>The distinction matters. A fitness function that checks for cyclic imports in your current Python codebase is ephemeral — it disappears when you rewrite in another language. A contract test that verifies "this event consumer receives this schema and produces this output" is durable — it survives a full reimplementation. The evolutionary framework already has both. The regenerative lens helps you invest in the right tier.</p>
+<p><strong>ADRs as provenance.</strong> Fowler's <a href="https://aicoding.leaflet.pub/3mcbiyal7jc2y"><em>Provenance Is the New Version Control</em></a> argues that when code can be regenerated on demand, the unit that must be preserved is no longer lines of code but reasons:</p>
+<blockquote><p>"Version control has to move upstream. Not from files to files, but from artifacts to intent."</p></blockquote>
+<p>ADRs are that upstream record. They don't just document decisions — they capture the causal chain: which requirement drove the decision, which constraint shaped it, which alternative was rejected and why. In an AI-assisted world, that provenance is what you feed back into the next generation cycle to avoid regenerating choices you've already paid to discover were wrong.</p>
+<p><strong>The modular monolith is the right regenerative grain.</strong> Fowler's concept of "regenerative grain" — the natural unit that is small enough to delete and recreate safely — maps directly to a bounded context with enforced boundaries, a clear public API, and exclusive data ownership, which satisfies what Fowler calls the Deletion Test: you can delete it, regenerate it, and the system still works.</p>
+<p>The modular monolith isn't just a valid permanent destination. It's also the natural unit of regeneration. Smaller than a service (no distributed systems overhead), larger than a class (meaningful behavior boundary). The evolutionary framework lands here for operational reasons; regenerative thinking arrives here for exactly the same ones.</p>
+<p>In practice, that means boundaries enforced in code while still deploying a single process.</p>
+<hr>
+<h2 id="where-regenerative-thinking-extends-the-framework">Where Regenerative Thinking Extends the Framework</h2>
+<p>The Phoenix Architecture isn't just a validation of evolutionary architecture. It extends it in three meaningful ways.</p>
+<h3 id="1-production-as-a-compiler-input">1. Production as a compiler input</h3>
+<p>Runtime alerts are automated checks that fire when production behavior crosses predefined thresholds. That’s useful, but it’s fundamentally reactive. Fowler’s <a href="https://aicoding.leaflet.pub/3mjx4erlboc2l"><em>Production Is a Compiler Input</em></a> argues for a more active role: treat production telemetry as an input to the specification itself.</p>
+<p>Production telemetry, in a regenerative system, doesn't just trigger alerts. It invalidates specific parts of the specification graph when production evidence drifts out of bounds:</p>
+<blockquote><p>"When production evidence drifts, Phoenix should not just open a ticket or wake up an engineer. It should invalidate the affected subgraph. Not the whole system. Only the part whose justification has expired."</p></blockquote>
+<p>This is a more precise version of the observability contract implied by runtime alerts. Runtime alerts are the current state of the art: they tell you something is wrong. The regenerative model takes the next step: it tells you which claim about the system is no longer true and triggers targeted regeneration rather than open-ended investigation.</p>
+<p>For practitioners today, this means investing in runtime alerts that are requirement-linked, not just metric-linked. Not just "P95 latency exceeded 200ms" but "P95 latency exceeded the 200ms ceiling committed to in ADR-023." The drift is then traceable to a specific architectural decision, not just a number on a dashboard.</p>
+<h3 id="2-evaluations-as-the-primary-investment">2. Evaluations as the primary investment</h3>
+<p>Both traditions agree that behavior verification outlives implementation. But they differ in emphasis.</p>
+<p>Evolutionary architecture treats fitness functions as governance — important, but secondary to the architecture itself. Regenerative thinking inverts the priority: if implementations can be regenerated, evaluations <em>are</em> the architecture. They're the primary artifact. Implementation is the build artifact.</p>
+<p>This suggests a different allocation of engineering effort. When building or evolving a bounded context, the question shouldn't be "what's the best implementation?" first. It should be: "what are the durable evaluations that any correct implementation must pass?" Answer that, and implementation becomes a detail — one that AI can increasingly assist with.</p>
+<h3 id="3-the-pace-of-evolution">3. The pace of evolution</h3>
+<p>Evolutionary architecture treats architectural steps as deliberate, evidence-backed transitions. You don't extract a service until you have high confidence across multiple readiness dimensions. You don't go event-driven until you've demonstrated the need and the operational maturity. These readiness criteria are intentionally strict: you only take an architectural step when the evidence is there. Regenerative software, as Fowler describes it, can operate at a faster pace — not because it abandons these readiness criteria, but because the cost of implementing a component drops.</p>
+<p>Here is one example of how such steps can be laid out. It is an illustration, not a destination.</p>
+<figure class="ladder"><div class="table-wrap"><table><thead><tr><th>Level</th><th>Optimize for</th><th>Deliverable</th></tr></thead><tbody><tr><td><strong>L1</strong></td><td>Learning &amp; experimentation</td><td>Walking Skeleton</td></tr><tr><td><strong>L2</strong></td><td>Modularity &amp; change isolation</td><td>Modular Monolith</td></tr><tr><td><strong>L3</strong></td><td>Independent deployability</td><td>Distributed Modules (Synchronous Communication)</td></tr><tr><td><strong>L4</strong></td><td>Decoupling in time</td><td>Distributed Modules (Asynchronous / Event-Driven Communication)</td></tr><tr><td><strong>L5</strong></td><td>Auditability &amp; temporal queries</td><td>Event Sourcing</td></tr></tbody></table></div><figcaption>An example ladder, not a required path. Move up a level only when the evidence justifies it, and stop wherever the system's needs are met.</figcaption></figure>
+<p>The readiness criteria don't disappear. Operability — being able to observe and operate what you build — becomes <em>more</em> important, not less. You need to know what your fitness functions check, what your contracts specify, and what your ADRs capture before you regenerate. What changes is the balance of risk: implementation risk relaxes, but specification and operability risks move to the foreground.</p>
+<p>This is the version of the framework that makes sense for teams operating with significant AI assistance today, and for the teams that will operate primarily through AI generation in the next few years.</p>
+<hr>
+<h2 id="a-reframing-what-evolutionary-always-meant">A Reframing: What "Evolutionary" Always Meant</h2>
+<p>The regenerative lens clarifies something about what evolutionary architecture was always trying to do.</p>
+<p>The point was never to reach a particular architectural state. The point was to build systems whose <em>identity</em> persists through change. A system can survive a team reorganization, a domain discovery that reveals a missing bounded context, a performance requirement that forces an extraction, or a regulatory change that mandates isolation.</p>
+<p>Fowler calls this "the system is the asset":</p>
+<blockquote><p>"Regeneration isn't starting over. What's preserved is the system's identity: its behavior, its contracts, its accumulated architectural decisions. What's discarded is the implementation, which was always less important than we treated it."</p></blockquote>
+<p>That's the evolutionary architecture thesis, stated from the other direction. Build systems that can safely change. Build systems whose identity persists through regeneration. These are the same goal.</p>
+<p>The difference is that evolutionary architecture developed its toolkit — bounded contexts, fitness functions, ADRs, extraction readiness gates — in a world where implementation was expensive, and implementation risk was the primary constraint. Regenerative software is developing its toolkit in a world where implementation is cheap and specification risk is the primary constraint: the risk that you regenerate the wrong thing, because you didn't preserve the right reasons.</p>
+<p>Both toolkits are needed. They compose naturally.</p>
+<hr>
+<h2 id="what-this-means-in-practice">What This Means in Practice</h2>
+<p>For practitioners reading this today:</p>
+<p><strong>Your bounded context boundaries are your most important design decision.</strong> They determine what can be regenerated independently. Wrong boundaries mean coordinated regeneration — the distributed systems overhead problem reappears at the specification layer.</p>
+<p><strong>Invest in durable evaluations.</strong> Contract tests, property tests, invariants, and end-to-end behavioral checks that verify obligations at boundaries. These survive reimplementation. Ephemeral unit tests don't. As AI assistance increases, the ratio of durable to ephemeral evaluations in your codebase should shift.</p>
+<p><strong>Write ADRs for the reasons, not the decisions.</strong> The decision is recoverable from code. The reason — the constraint that ruled out the alternatives, the trade-off that shaped the choice — is not. That's the provenance worth preserving.</p>
+<p><strong>Treat production signals as evidence, not just alerts.</strong> When a runtime threshold fires, ask which architectural claim is now invalidated, not just which metric exceeded its bound. The fitness function is not just a governance mechanism; it's part of the specification that any correct implementation must satisfy.</p>
+<p><strong>The modular monolith is where regeneration starts.</strong> Before a bounded context can be safely regenerated, it needs a clean boundary, exclusive data ownership, and durable evaluations at its interface. The evolutionary path to a well-structured modular monolith is also the path to a system that can regenerate safely.</p>
+<hr>
+<h2 id="the-thread">The Thread</h2>
+<p>A paradox: your highest-impact architectural decisions must be made when you know least.</p>
+<p>The evolutionary answer is: delay binding, gather evidence, enforce boundaries, automate governance. Build systems that can absorb change without breaking.</p>
+<p>The regenerative extension is: preserve specifications, invest in durable evaluations, capture provenance, and carefully draw context boundaries. Build systems whose identity persists through regeneration.</p>
+<p>These aren't competing answers. They're the same answer at different timescales and different cost structures.</p>
+<p>The throughline hasn't changed: <strong>build for safe change</strong>. The definition of "safe" is expanding. Implementation was always more disposable than we treated it. Now the economics make that visible.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul><li><a href="https://aicoding.leaflet.pub">The Phoenix Architecture</a> — Chad Fowler's ongoing series on regenerative software</li><li><a href="https://aicoding.leaflet.pub/3mb526js42k26">Evaluations Are the Real Codebase</a> — Why behavior outlives implementations</li><li><a href="https://aicoding.leaflet.pub/3mgfsrk75ac2l">Compile to Architecture</a> — Architecture as the compilation target</li><li><a href="https://aicoding.leaflet.pub/3mjfruwwuck2d">The Phoenix Primitives</a> — Specification, evaluation, context boundary, provenance</li><li><a href="https://aicoding.leaflet.pub/3mcbiyal7jc2y">Provenance Is the New Version Control</a> — Reasons outlive code</li><li><a href="https://aicoding.leaflet.pub/3mjx4erlboc2l">Production Is a Compiler Input</a> — Observability as a spec input, not just a debug tool</li><li><a href="https://evolutionaryarchitecture.com">Building Evolutionary Architectures</a> — Ford, Parsons, Kua — the foundational text this series draws from</li></ul>
+
+  <div class="cta">
+    <p>Want help making your architecture regeneration-ready?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>
