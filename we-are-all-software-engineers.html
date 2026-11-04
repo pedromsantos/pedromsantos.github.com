@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drop the Label: We Are All Software Engineers Now · Pedro Santos</title>
+<meta name="description" content="Front-end and native mobile titles are shrinking, back-end and Java sit outside the AI growth, and the labels we built careers on are fading. Thirty years and seven labels later: drop the label, keep the depth.">
+<meta property="og:title" content="Drop the Label: We Are All Software Engineers Now">
+<meta property="og:description" content="You are not a C# back-end developer. You are a software engineer who happens to know C# very well.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Drop the Label: We Are All Software Engineers Now",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">article · the profession</p>
+  <h1>Drop the Label: We Are All Software Engineers Now</h1>
+  <p class="byline">By Pedro Santos · 8 min read</p>
+
+<p><strong>I am preparing a workshop for a client, and they asked me a fair question.</strong> Some of the people attending are iOS developers. Some are front-end developers. My exercises looked like back-end exercises. Would they still get something out of it?</p>
+<p>I answered the practical question. But the question behind it stayed with me for days: are we still a profession of iOS developers, Android developers, React developers, Java back-end developers?</p>
+<p>I don't think we are. I think that is already gone, and many of us have not been told.</p>
+<hr>
+
+<h2 id="thirty-years-of-labels">Thirty years of labels</h2>
+<p>I know what it feels like to be a label, because I have worn a lot of them.</p>
+<p>I started as a Pascal developer on DOS machines. When I started working, I moved to Unix and became a Unix engineer writing C. In the 90s I moved to the Mac and was writing Pascal again, so I was a Mac developer. Then the Mac moved to C, and so did I.</p>
+<p>Then I went to Windows, and I was a Windows developer doing C++ and COM. Then C# arrived, and I became a .NET developer, a back-end developer. Then the iPhone happened, and I became an iOS developer writing Objective-C, building and publishing my own apps for the App Store. Then Swift. Then back to C# on the back end, as a software craftsman at Codurance in London, and later at ASOS.</p>
+<figure class="ladder"><div class="table-wrap"><table><thead><tr><th>What I called myself</th><th>Platform</th><th>Language</th></tr></thead><tbody>
+<tr><td><strong>Pascal developer</strong></td><td>DOS</td><td>Pascal</td></tr>
+<tr><td><strong>Unix engineer</strong></td><td>Unix</td><td>C</td></tr>
+<tr><td><strong>Mac developer</strong></td><td>Mac OS</td><td>Pascal, then C</td></tr>
+<tr><td><strong>Windows developer</strong></td><td>Windows</td><td>C++ and COM</td></tr>
+<tr><td><strong>.NET back-end developer</strong></td><td>Windows, then the cloud</td><td>C#</td></tr>
+<tr><td><strong>iOS developer</strong></td><td>iPhone</td><td>Objective-C, then Swift</td></tr>
+<tr><td><strong>Back-end developer</strong></td><td>The cloud</td><td>C# again</td></tr>
+</tbody></table></div><figcaption>Seven labels in thirty years. Every one of them felt permanent while I wore it.</figcaption></figure>
+<p>Every one of those labels felt like who I was. Every one of them ended. And every time, what carried over was never the platform or the language. It was the things underneath: breaking a problem down, designing something that can change, testing it, reading someone else's code, talking to the people who will use it.</p>
+<p>The labels were never the job. They were where the job happened to be at the time.</p>
+<hr>
+
+<h2 id="what-the-numbers-say">What the numbers say now</h2>
+<p>This is not only my story. The job market is saying the same thing, and saying it faster than before.</p>
+<p><strong>Front-end and native mobile titles are shrinking fastest.</strong> The Pragmatic Engineer's 2026 analysis of job titles on LinkedIn found front-end engineer titles disappearing fastest, followed by native iOS and Android (<a href="https://newsletter.pragmaticengineer.com/i/201325168/3-mobile-and-frontend-demand-drops-ai-and-fde-surges">The Pragmatic Engineer</a>). The reasons given are cross-platform frameworks that remove the need for separate native teams, and AI that makes it easier for a front-end developer to take on back-end work (<a href="https://news.lavx.hu/article/the-2026-software-engineering-job-market-ai-labs-pull-ahead-and-the-intern-pipeline-quietly-breaks">summary</a>).</p>
+<p><strong>"Software engineer" dwarfs the specialist titles.</strong> In one sample of active postings from June 2026, software engineer roles outnumbered mobile developer roles by roughly 18 to 1 (<a href="https://interviewstack.io/blog/software-engineer-vs-mobile-developer-2026">InterviewStack</a>).</p>
+<p><strong>This started before AI.</strong> Ten years of Stack Overflow surveys show a shrinking share of developers who only do front-end or only do back-end work (<a href="https://www.boot.dev/blog/jobs/trends-in-developer-jobs-stackoverflow">Boot.dev</a>). In the 2025 survey, full-stack was still the most common role (<a href="https://appdevelopermagazine.com/stack-overflow-2025-developer-survey/amp/">Stack Overflow 2025</a>). AI did not start this. It is speeding it up.</p>
+<p><strong>Back-end and Java are holding steady, but outside the growth.</strong> Back-end and Java remain among the largest specializations in global job listings, just behind full-stack and well ahead of front-end (<a href="https://corvi.careers/blog/global_software-engineering_jobs_april_2026/">Corvi</a>). But in one sample only 6% of Java postings asked for AI or ML skills (<a href="https://misujob.com/reports/java/2026-05/">MisuJob</a>), while Indeed reported software development postings up 14% year over year, with almost half of them mentioning AI (<a href="https://fortune.com/2026/05/19/indeed-chief-economist-svenja-gudell-sectors-most-exposed-ai-big-job-growth/">Fortune</a>). The work is growing where AI is part of it.</p>
+<p>Most of these numbers come from US-heavy job boards. Read them as direction, not as an exact forecast for your city. But the direction is clear.</p>
+<hr>
+
+<h2 id="this-is-grief">This is grief, and that is allowed</h2>
+<p>I want to be careful here, because a lot of writing about AI and our profession is either cheerleading or doom. This is neither.</p>
+<p>If you have spent ten or fifteen years becoming an excellent iOS developer, or the person everyone calls when the Java back end breaks, that identity is not trivial. You earned it. It came with respect, with a community, with conference talks and job offers. Hearing that the label is fading feels like hearing that the years behind it were wasted.</p>
+<p>They were not wasted. But it is still a loss, and losses are grieved. Denial ("my stack is different"), anger ("this is just hype"), bargaining ("I'll learn one more framework and stay where I am"). I have been through every one of those, more than once, every time a platform I loved stopped being the place where the work was.</p>
+<p>You deserve the time to feel that. People who have given this profession decades deserve honesty and respect, not a slogan.</p>
+<p>What I will not do is pretend the change is not happening. That would be the unkind thing.</p>
+<hr>
+
+<h2 id="what-the-data-doesnt-say">What the data does not say</h2>
+<p>Honesty cuts both ways, so here is what the numbers do not prove.</p>
+<ul>
+<li><strong>Depth is not worthless.</strong> Senior native iOS engineers still earn more than native Android engineers, and native work still pays more than cross-platform at the same level (<a href="https://www.kore1.com/mobile-app-developer-salary-guide/">Kore1</a>). Deep knowledge of a platform still has a price. It is just no longer a job title on its own.</li>
+<li><strong>Java jobs are not all legacy jobs.</strong> The market looks a lot like enterprise and legacy work, but plenty of it is modern services in the cloud.</li>
+<li><strong>"No AI in the posting" does not mean "no AI in the job."</strong> Even general software engineer postings rarely list the AI coding tools that engineers use every day (<a href="https://interviewstack.io/blog/software-engineer-vs-mobile-developer-2026">InterviewStack</a>). Job ads lag the work.</li>
+</ul>
+<p>So the claim is narrower than "specialists are finished." It is this: <strong>the specialist label is no longer a safe place to stand.</strong></p>
+<hr>
+
+<h2 id="maintainer-or-modernizer">Maintainer or modernizer</h2>
+<p>Legacy systems are not going away. Banks, insurers and airlines will run Java and C# for a long time. The question is not whether that work exists. It is which role you play in it.</p>
+<div class="table-wrap"><table><thead><tr><th></th><th>Maintainer</th><th>Modernizer</th></tr></thead><tbody>
+<tr><td><strong>The work</strong></td><td>Keeps the system alive, ticket by ticket</td><td>Understands it, puts it under test, refactors it, moves it forward</td></tr>
+<tr><td><strong>What AI does to it</strong></td><td>Compresses it fastest</td><td>Multiplies it on large, poorly understood code</td></tr>
+<tr><td><strong>The skills</strong></td><td>Knowledge of one stack</td><td>Characterization tests, safe refactoring, incremental design, directing agents</td></tr>
+<tr><td><strong>Where you stand</strong></td><td>Stable, with little leverage</td><td>Scarce and valuable</td></tr>
+</tbody></table></div>
+<p>Old systems do not need old skills. They need the ones that were never about a language: reading code you did not write, getting it under test, changing it safely. With an AI agent in the loop, those skills matter more, not less. They are what turns an agent from a risk on a legacy codebase into a multiplier.</p>
+<p>The iOS and front-end version of the maintainer is the engineer who only ever touches one layer. The modernizer is the one who can follow a feature from the screen to the database and back.</p>
+<hr>
+
+<h2 id="drop-the-label">Drop the label, keep the depth</h2>
+<p>So here is my message, as plainly as I can put it.</p>
+<div class="law"><p>You are not a C# back-end developer. You are not an iOS developer.</p><p>You are a software engineer who happens to know C#, or iOS, very well.</p></div>
+<p>That is not a demotion. It is the thing you always were underneath the label. Some practical ways to start living it:</p>
+<ul>
+<li><strong>Introduce yourself differently.</strong> "Software engineer, strongest in mobile" opens doors that "iOS developer" closes.</li>
+<li><strong>Take one ticket outside your layer this month.</strong> With an AI agent next to you, the barrier is lower than it has ever been.</li>
+<li><strong>Invest in the skills that survived every platform change.</strong> Test-driven development, refactoring, design, and reading other people's code. They travelled with me through seven labels, and they are exactly what make AI-generated code trustworthy.</li>
+<li><strong>Learn to direct agents, not just use autocomplete.</strong> Specifications, tests that judge the output, and boundaries the agent cannot cross. That is where the job is going.</li>
+</ul>
+<p>Back to that client question. Yes, the iOS and front-end developers will get something out of a back-end exercise. The practice is the same in every language and on every platform. That is the point.</p>
+<p>I have dropped seven labels in thirty years. It hurt a little every time. It was the right call every time.</p>
+
+<h2 id="sources">Sources</h2>
+<ul class="resources">
+<li><a href="https://newsletter.pragmaticengineer.com/i/199358573/what-happened-in-mid-2025-at-microsoft">The Pragmatic Engineer — State of the software engineering job market in 2026, part 1</a></li>
+<li><a href="https://newsletter.pragmaticengineer.com/i/201325168/3-mobile-and-frontend-demand-drops-ai-and-fde-surges">The Pragmatic Engineer — part 2: mobile and front-end demand drops</a></li>
+<li><a href="https://news.lavx.hu/article/the-2026-software-engineering-job-market-ai-labs-pull-ahead-and-the-intern-pipeline-quietly-breaks">Summary of The Pragmatic Engineer, part 2</a></li>
+<li><a href="https://interviewstack.io/blog/software-engineer-vs-mobile-developer-2026">InterviewStack — Software Engineer vs Mobile Developer in 2026</a></li>
+<li><a href="https://www.kore1.com/mobile-app-developer-salary-guide/">Kore1 — Mobile app developer salary guide</a></li>
+<li><a href="https://corvi.careers/blog/global_software-engineering_jobs_april_2026/">Corvi — Global software engineering job openings, April 2026</a></li>
+<li><a href="https://misujob.com/reports/java/2026-05/">MisuJob — The Java job market, May 2026</a></li>
+<li><a href="https://fortune.com/2026/05/19/indeed-chief-economist-svenja-gudell-sectors-most-exposed-ai-big-job-growth/">Fortune — Indeed's chief economist on AI and software jobs</a></li>
+<li><a href="https://www.boot.dev/blog/jobs/trends-in-developer-jobs-stackoverflow">Boot.dev — Trends in developer jobs from Stack Overflow surveys</a></li>
+<li><a href="https://appdevelopermagazine.com/stack-overflow-2025-developer-survey/amp/">App Developer Magazine — Stack Overflow 2025 Developer Survey</a></li>
+</ul>
+
+  <div class="cta">
+    <p>Want help bringing your teams through this change?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>
