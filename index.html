@@ -420,13 +420,15 @@
 
         <article class="card wide">
           <p class="mono">Refine · 2025–2026</p>
-          <h3>Guardrails for an LLM product</h3>
+          <h3>The testing strategy behind an LLM product</h3>
           <p>
-            Worked on a multi-provider LLM pipeline (client, segmentation, prompts, rate limits), then on what keeps
-            agents honest in the codebase: instruction files for Claude and Copilot, architecture rules turned into
-            tests, LLM integration tests that check meaning rather than exact text, and recurring architecture reviews.
+            Designed Refine's testing strategy and built its first version: unit tests split by hexagonal layer
+            (domain, application, infrastructure), an acceptance suite for every use case, and architecture tests
+            that enforce the best-practices guide I wrote, including a test-driven algorithm for implementing a user
+            story. The team has since grown it into a full test pyramid. Around it: work on the multi-provider LLM
+            pipeline, and the instruction files that keep coding agents inside the architecture.
           </p>
-          <ul class="tags"><li>prompt engineering</li><li>LLM integration tests</li><li>agent instructions</li><li>architecture tests</li><li>hexagonal · DDD · CQRS</li></ul>
+          <ul class="tags"><li>testing strategy</li><li>test pyramid</li><li>architecture tests</li><li>hexagonal · DDD · CQRS</li><li>agent instructions</li></ul>
         </article>
       </div>
     </div>

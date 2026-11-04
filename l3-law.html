@@ -125,6 +125,13 @@
   figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
   figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
   figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
   .takeaway { margin-top: 3.5rem; text-align: center; }
   .takeaway .law { text-align: left; }
   .resources li { margin: 0.5rem 0; }
@@ -431,6 +438,83 @@
     implementation. The agent MAY generate unit tests after or alongside the code, but it MUST NOT change the oracle
     merely because the generated implementation fails it.
   </p>
+
+
+  <figure class="wide pyramid">
+    <div class="frame">
+      <svg viewBox="0 0 1010 530" role="img" aria-labelledby="pyr-title pyr-desc">
+        <title id="pyr-title">Who owns each test layer under the L3 Law</title>
+        <desc id="pyr-desc">A test pyramid. At the base, unit tests split into domain, application and infrastructure, written by the agent alongside the code. Above them, acceptance tests for each use case, owned by humans as the oracle. Above that, integration tests for adapters, written by the agent, beside contract tests for the HTTP layer, owned by humans. At the tip, end-to-end tests of a complete user journey, owned by humans. A pillar beside the pyramid shows architecture fitness checks, also owned by humans. Human-owned layers are read-only to the agent.</desc>
+        <g font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" text-anchor="middle">
+          <!-- fitness pillar -->
+          <rect x="20" y="30" width="46" height="400" rx="10" class="h"/>
+          <text transform="translate(48 230) rotate(-90)" class="in" font-size="13" font-weight="700" letter-spacing="0.06em">ARCHITECTURE FITNESS CHECKS · HUMAN</text>
+
+          <!-- e2e -->
+          <polygon points="430,30 502,120 358,120" class="h"/>
+          <text x="430" y="94" class="in" font-size="14" font-weight="700">E2E</text>
+          <text x="430" y="110" class="in tag" font-size="9">HUMAN</text>
+
+          <!-- integration | contract -->
+          <polygon points="358,123 429,123 429,210 286,210" class="a"/>
+          <text x="384" y="166" class="in" font-size="13" font-weight="700">Integration</text>
+          <text x="388" y="183" class="in tag" font-size="9">AGENT</text>
+          <polygon points="431,123 502,123 574,210 431,210" class="h"/>
+          <text x="476" y="166" class="in" font-size="13" font-weight="700">Contract</text>
+          <text x="472" y="183" class="in tag" font-size="9">HUMAN</text>
+
+          <!-- acceptance -->
+          <polygon points="286,213 574,213 646,300 214,300" class="h"/>
+          <text x="430" y="252" class="in" font-size="15" font-weight="700">Acceptance tests</text>
+          <text x="430" y="272" class="in tag" font-size="10">HUMAN · THE ORACLE</text>
+
+          <!-- unit: domain | application | infrastructure -->
+          <polygon points="214,303 330,303 330,430 110,430" class="a"/>
+          <polygon points="333,303 527,303 527,430 333,430" class="a"/>
+          <polygon points="530,303 646,303 750,430 530,430" class="a"/>
+          <text x="262" y="362" class="in" font-size="14" font-weight="700">domain</text>
+          <text x="430" y="362" class="in" font-size="14" font-weight="700">application</text>
+          <text x="608" y="362" class="in" font-size="14" font-weight="700">infrastructure</text>
+          <text x="262" y="382" class="in tag" font-size="9">AGENT</text>
+          <text x="430" y="382" class="in tag" font-size="9">AGENT</text>
+          <text x="608" y="382" class="in tag" font-size="9">AGENT</text>
+          <text x="430" y="456" class="job" font-size="13" font-weight="600">Unit tests, written with the code</text>
+
+          <!-- leaders and jobs -->
+          <g class="lead" stroke-dasharray="2 4">
+            <line x1="484" y1="82" x2="772" y2="82"/>
+            <line x1="545" y1="166" x2="772" y2="166"/>
+            <line x1="617" y1="256" x2="772" y2="256"/>
+            <line x1="703" y1="366" x2="772" y2="366"/>
+          </g>
+          <g text-anchor="start" class="job" font-size="13">
+            <text x="782" y="78">A complete user journey,</text>
+            <text x="782" y="95">everything real</text>
+            <text x="782" y="158">Integration: each adapter</text>
+            <text x="782" y="175">against real infrastructure</text>
+            <text x="782" y="192">Contract: the HTTP layer</text>
+            <text x="782" y="248">Each use case's behaviour:</text>
+            <text x="782" y="265">the definition of done</text>
+            <text x="782" y="358">Each layer in isolation,</text>
+            <text x="782" y="375">domain objects never mocked</text>
+          </g>
+
+          <!-- legend -->
+          <g text-anchor="start" font-size="13">
+            <rect x="110" y="488" width="16" height="16" rx="4" class="h"/>
+            <text x="134" y="501" class="job">Human-approved: the oracle, read-only to the agent</text>
+            <rect x="560" y="488" width="16" height="16" rx="4" class="a"/>
+            <text x="584" y="501" class="job">Agent-written: generated with the code, a safety net</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <figcaption>
+      Who owns each layer. Humans approve the tests that judge the work; the agent writes the tests that support it,
+      and it may never edit the first kind to make the second pass. The layers follow the testing strategy I
+      designed for an LLM product.
+    </figcaption>
+  </figure>
 
   <h2 id="worked-example">Worked example: a fully specified slice</h2>
   <div class="example">
