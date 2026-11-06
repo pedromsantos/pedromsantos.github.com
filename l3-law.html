@@ -18,7 +18,8 @@
   "@type": "Article",
   "headline": "Pedro's L3 Law: Specifications First, Code Second",
   "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] },
-  "dateModified": "2026-10-22",
+  "datePublished": "2026-10-22",
+  "dateModified": "2026-11-06",
   "image": "images/pedros-law-two-loops.svg"
 }
 </script>
@@ -135,6 +136,11 @@
   .takeaway { margin-top: 3.5rem; text-align: center; }
   .takeaway .law { text-align: left; }
   .resources li { margin: 0.5rem 0; }
+  .tiers { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); margin: 1.25rem 0; }
+  .tier { padding: 1rem 1.1rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); font-size: 0.95rem; }
+  .tier h3 { margin: 0 0 0.4rem; }
+  .tier p { margin: 0.4rem 0; }
+  .tier ul { margin: 0.25rem 0 0; }
   .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
   .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
   .toc li { break-inside: avoid; margin: 0.15rem 0; }
@@ -163,7 +169,7 @@
 <article>
   <p class="eyebrow">article · agentic engineering</p>
   <h1>Pedro's L3 Law: Specifications First, Code Second</h1>
-  <p class="byline">By Pedro Santos · October 2026 · 11 min read · <a href="talks/l3-law-scbcn-2026/">slides from the Software Crafters Barcelona open space</a></p>
+  <p class="byline">By Pedro Santos · October 2026 · 15 min read · <a href="talks/l3-law-scbcn-2026/">slides from the Software Crafters Barcelona open space</a></p>
 
   <div class="law">
     <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
@@ -173,12 +179,13 @@
   <figure class="wide">
     <div class="frame"><img src="images/pedros-law-two-loops.svg" width="1280" height="720"
       alt="Pedro's Law, two loops. In the specs loop, humans use many prompts with AI agents to write, approve and version a specification, and review the result. In the implementation loop, the agent receives one controlled prompt, then generates, evaluates and improves the implementation within the approved specification. Every specification failure returns to the specs loop."></div>
+    <figcaption>Two loops. Humans own the specs loop and use many prompts. The agent owns the implementation loop and gets one prompt.</figcaption>
   </figure>
 
   <h2 id="introduction">Introduction</h2>
   <p>
-    Pedro's L3 Law is the specification-first discipline for Level 3 Agentic Engineering. Level 3 is not simply
-    using an AI coding assistant more often. It is a different way of organising engineering work.
+    When code is cheap to generate, the specification becomes the scarce artifact. Pedro's L3 Law is the specification-first discipline for Level 3 Agentic Engineering. Level 3 is not simply
+    using an AI coding assistant more often. It is a different way of organizing engineering work.
   </p>
   <p class="aside">Yes, I named it after myself, so that nobody else gets the blame.</p>
   <p>
@@ -189,7 +196,11 @@
   </p>
   <p>The central shift is:</p>
   <blockquote><p>Engineers spend less time directing individual code changes and more time designing the specifications, constraints, evaluation mechanisms, and agent workflows that produce reliable code.</p></blockquote>
-  <p>Level 3 is one step on a broader maturity model of agentic engineering.</p>
+  <p>
+    The levels follow the four-level maturity path of the <a href="https://alejtraws.github.io/agentic-engineering-framework/adopt/maturity-path.html">Agentic Engineering Framework</a>. At L3,
+    the agent runs the full workflow end to end, and humans review the result. At L4, quality gates pass and
+    changes merge without a human in the active loop.
+  </p>
 
   <nav class="toc" aria-label="In this article">
     <p class="eyebrow">in this article</p>
@@ -208,11 +219,11 @@
       <li><a href="#traceability">Traceability and reproducibility</a></li>
       <li><a href="#identifiers">Identifiers</a></li>
       <li><a href="#workflow">Team workflow and focus</a></li>
-      <li><a href="#parallelisation">Parallelisation and Level 3</a></li>
+      <li><a href="#parallelisation">Parallelization and Level 3</a></li>
       <li><a href="#metrics">Adoption and health metrics</a></li>
-      <li><a href="#takeaway">Takeaway</a></li>
       <li><a href="#confirmation">Independent confirmation</a></li>
       <li><a href="#l3-to-l4">What next: from L3 to L4</a></li>
+      <li><a href="#takeaway">Takeaway</a></li>
       <li><a href="#resources">Resources</a></li>
     </ol>
   </nav>
@@ -226,7 +237,7 @@
   </p>
   <ul>
     <li><span class="keyword">MUST</span> and <span class="keyword">MUST NOT</span> are mandatory rules.</li>
-    <li><span class="keyword">SHOULD</span> and <span class="keyword">SHOULD NOT</span> are recommendations; exceptions require an explicit, documented reason.</li>
+    <li><span class="keyword">SHOULD</span> and <span class="keyword">SHOULD NOT</span> are recommendations. Exceptions require an explicit, documented reason.</li>
     <li><span class="keyword">MAY</span> indicates permission or an available option.</li>
   </ul>
 
@@ -238,14 +249,19 @@
   </p>
   <p>Teams MUST refine specifications in thin vertical slices instead of designing the whole system upfront.</p>
   <p>
-    Once a slice is approved, the human gives the implementation agent one controlled implementation prompt. The
-    agent then plans the change and generates the code and associated unit tests. The agent MUST run the approved
-    checks. The agent MAY iterate autonomously until the checks pass.
+    After a human approves a slice, that human gives the implementation agent one implementation prompt. The
+    agent then plans the change and generates the code and associated unit tests. The agent MUST run the quality gates, the approved
+    checks that include the oracle (the human-approved acceptance tests and fitness functions, which are automated architecture
+    checks). The agent MAY iterate autonomously until the checks pass.
   </p>
   <p>
     The rule is not a count of messages. The implementation prompt and its autonomous loop MUST NOT introduce new
     requirements or design decisions. If a new requirement or design decision is needed, the agent MUST stop and
     escalate it for specification work.
+  </p>
+  <p>
+    Corrective prompts are not forbidden. Each human prompt after the implementation prompt shows that the
+    specification or the repository context failed. Teams count these prompts and fix the specification.
   </p>
 
   <h2 id="risk-tiers">Risk tiers</h2>
@@ -253,27 +269,25 @@
     Each slice MUST meet the minimum specification for its risk tier. If a change matches more than one tier, use
     the highest tier. Teams MAY adapt these tiers, but they MUST record their tiers in repository guidance.
   </p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Tier</th><th>Typical changes</th><th>Minimum specification</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><strong>Low</strong></td>
-          <td>Internal refactoring, copy changes, or an isolated bug fix with no contract, data, or security impact</td>
-          <td><ul><li>Behaviour, scope, and non-scope</li><li>Boundaries that the change touches</li><li>Acceptance tests</li></ul></td>
-        </tr>
-        <tr>
-          <td><strong>Medium</strong></td>
-          <td>A new feature or endpoint in one service, a change to an internal contract, or a new dependency</td>
-          <td>Everything in Low, plus:<ul><li>Interface or API contract</li><li>Error and edge cases</li><li>Fitness checks</li><li>An ADR for each architecture decision</li></ul></td>
-        </tr>
-        <tr>
-          <td><strong>High</strong></td>
-          <td>Public contracts, data schemas, security controls, sensitive data, infrastructure, cross-service or cross-team changes, or significant cost or capacity changes</td>
-          <td>Everything in Medium, plus:<ul><li>Architecture and ADRs</li><li>Security, privacy, and compliance requirements</li><li>Observability requirements</li><li>Deployment, rollback, and recovery</li><li>A named human approver</li></ul></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="tiers">
+    <section class="tier">
+      <h3>Low</h3>
+      <p><strong>Typical changes:</strong> internal refactoring, copy changes, or an isolated bug fix with no contract, data, or security impact.</p>
+      <p><strong>Minimum specification:</strong></p>
+      <ul><li>Behavior, scope, and non-scope</li><li>Boundaries that the change touches</li><li>Acceptance tests</li></ul>
+    </section>
+    <section class="tier">
+      <h3>Medium</h3>
+      <p><strong>Typical changes:</strong> a new feature or endpoint in one service, a change to an internal contract, or a new dependency.</p>
+      <p><strong>Minimum specification:</strong> everything in Low, plus:</p>
+      <ul><li>Interface or API contract</li><li>Error and edge cases</li><li>Fitness checks</li><li>An ADR for each architecture decision</li></ul>
+    </section>
+    <section class="tier">
+      <h3>High</h3>
+      <p><strong>Typical changes:</strong> public contracts, data schemas, security controls, sensitive data, infrastructure, cross-service or cross-team changes, or significant cost or capacity changes.</p>
+      <p><strong>Minimum specification:</strong> everything in Medium, plus:</p>
+      <ul><li>Architecture and ADRs</li><li>Security, privacy, and compliance requirements</li><li>Observability requirements</li><li>Deployment, rollback, and recovery</li><li>A named human approver</li></ul>
+    </section>
   </div>
 
   <h2 id="what-belongs">What belongs in the specification</h2>
@@ -297,25 +311,34 @@
     contradictions.
   </p>
   <p>
-    The resulting decisions MUST be moved into durable artifacts such as requirements, diagrams, ADRs, repository
-    guidance, security policies, test specifications, acceptance criteria, fitness functions, configuration,
-    runbooks, evaluation datasets, or review checklists.
+    Teams MUST move the resulting decisions into durable artifacts, for example:
   </p>
+  <ul>
+    <li>Requirements, diagrams, and ADRs</li>
+    <li>Repository guidance and security policies</li>
+    <li>Test specifications, acceptance criteria, and fitness functions</li>
+    <li>Configuration, runbooks, evaluation datasets, and review checklists</li>
+  </ul>
   <p>If a prompt contains a decision that matters after the current session, move that decision into a durable specification or executable check.</p>
 
   <h2 id="prompt-local-knowledge">Prompt-local knowledge</h2>
   <p>
-    When multiple prompts are used directly to generate or modify code, important knowledge may remain only in
-    conversation context, an agent session, tool output, uncommitted changes, review comments, generated code, or
-    an agent transcript.
+    Teams sometimes use many prompts to generate or change code directly. Important knowledge can then stay only in
+    these places:
   </p>
+  <ul>
+    <li>Conversation context or an agent session</li>
+    <li>Tool output or an agent transcript</li>
+    <li>Uncommitted changes or generated code</li>
+    <li>Review comments</li>
+  </ul>
   <p>
-    This creates <em>prompt-local knowledge</em>: knowledge that influenced the implementation but cannot reliably
+    Knowledge in these places is <em>prompt-local knowledge</em>: knowledge that influenced the implementation but cannot reliably
     be recovered, evaluated, or reused.
   </p>
   <p>
-    For example, an early prompt may establish that a service must use a repository abstraction rather than call a
-    database directly. A later prompt may bypass that boundary to fix a failing test. If the original decision
+    For example, an early prompt can establish that a service must use a repository abstraction rather than call a
+    database directly. A later prompt can bypass that boundary to fix a failing test. If the original decision
     existed only in the conversation, the architectural knowledge can be lost or contradicted.
   </p>
   <p>Ask:</p>
@@ -339,8 +362,8 @@
     <li>Opens a change for human review.</li>
   </ol>
   <p>
-    The human gives one implementation instruction. The agent MAY perform multiple autonomous iterations inside
-    that instruction; those iterations are not new design conversations.
+    The human gives one implementation prompt. The agent MAY perform multiple autonomous iterations inside that
+    prompt. Those iterations are not new design conversations.
   </p>
 
   <h2 id="read-only">Read-only specifications and escalation</h2>
@@ -348,9 +371,9 @@
     The implementation agent MUST NOT modify the approved requirements, acceptance tests, fitness functions,
     security boundaries, or architectural decisions in order to make the implementation pass.
   </p>
-  <p>Read-only status MUST be enforced by mechanisms in addition to prompt instructions. Teams SHOULD use an appropriate combination of:</p>
+  <p>Teams MUST enforce read-only status with mechanisms, not only with prompt instructions. Teams SHOULD use an appropriate combination of:</p>
   <ul>
-    <li>Protected paths and CODEOWNERS for specifications and oracle files</li>
+    <li>Protected paths and CODEOWNERS (the file that names who must approve changes to a path) for specifications and oracle files</li>
     <li>CI checks that fail when an implementation change modifies protected specification or oracle files</li>
     <li>Agent sandbox permissions that remove write access to those paths</li>
     <li>Separate repositories or branches for approved specifications where appropriate</li>
@@ -370,7 +393,7 @@
   </ul>
   <p>The agent's classification is a proposal only. A human MUST classify the issue and either:</p>
   <ul>
-    <li>Confirm that the specification is correct and direct the agent to fix the implementation; or</li>
+    <li>Confirm that the specification is correct and direct the agent to fix the implementation, or</li>
     <li>Revise and version the specification, then restart or regenerate the change.</li>
   </ul>
   <p>The agent MUST NOT weaken a test, bypass a boundary, or silently reinterpret a requirement.</p>
@@ -386,7 +409,7 @@
   <p>
     The implementation exposes a problem in the requirements or design. Examples include contradictory
     requirements, an architecture that cannot support the required scale, ambiguous acceptance criteria, an omitted
-    security boundary, or an impossible operational expectation. The agent MUST stop and escalate; the team MUST
+    security boundary, or an impossible operational expectation. The agent MUST stop and escalate. The team MUST
     revise and version the specification before regenerating the change.
   </p>
 
@@ -405,8 +428,8 @@
     <li>Re-run the quality gates and review the resulting diff.</li>
   </ol>
   <p>
-    Human edits made during review MUST either be incorporated into the specification before regeneration or be
-    explicitly recorded as an approved manual change that will not be regenerated.
+    Before regeneration, the team MUST add each human review edit to the specification, or record it as an approved
+    manual change. Regeneration does not replace an approved manual change.
   </p>
   <p>
     The scope of regeneration SHOULD be the affected change set or thin vertical slice, not the entire product or
@@ -419,7 +442,7 @@
   </p>
   <p>
     The regenerated output does not need to be identical. Regeneration success means that the new change passes the
-    same approved quality gates and remains traceable to the specification; it does not mean that the generated
+    same approved quality gates and remains traceable to the specification. It does not mean that the generated
     code is textually identical.
   </p>
 
@@ -431,7 +454,7 @@
   </p>
   <p>
     Generated unit tests MUST NOT contradict the approved acceptance tests or fitness functions. The team MUST
-    evaluate the implementation against the approved behavioural oracle separately.
+    evaluate the implementation against the approved behavioral oracle separately.
   </p>
   <p>
     This is compatible with test-first engineering when the team defines acceptance and fitness tests before
@@ -453,15 +476,15 @@
           <!-- e2e -->
           <polygon points="430,30 502,120 358,120" class="h"/>
           <text x="430" y="94" class="in" font-size="14" font-weight="700">E2E</text>
-          <text x="430" y="110" class="in tag" font-size="9">HUMAN</text>
+          <text x="430" y="110" class="in tag" font-size="11">HUMAN</text>
 
           <!-- integration | contract -->
           <polygon points="358,123 429,123 429,210 286,210" class="a"/>
           <text x="384" y="166" class="in" font-size="13" font-weight="700">Integration</text>
-          <text x="388" y="183" class="in tag" font-size="9">AGENT</text>
+          <text x="388" y="183" class="in tag" font-size="11">AGENT</text>
           <polygon points="431,123 502,123 574,210 431,210" class="h"/>
           <text x="476" y="166" class="in" font-size="13" font-weight="700">Contract</text>
-          <text x="472" y="183" class="in tag" font-size="9">HUMAN</text>
+          <text x="472" y="183" class="in tag" font-size="11">HUMAN</text>
 
           <!-- acceptance -->
           <polygon points="286,213 574,213 646,300 214,300" class="h"/>
@@ -475,9 +498,9 @@
           <text x="262" y="362" class="in" font-size="14" font-weight="700">domain</text>
           <text x="430" y="362" class="in" font-size="14" font-weight="700">application</text>
           <text x="608" y="362" class="in" font-size="14" font-weight="700">infrastructure</text>
-          <text x="262" y="382" class="in tag" font-size="9">AGENT</text>
-          <text x="430" y="382" class="in tag" font-size="9">AGENT</text>
-          <text x="608" y="382" class="in tag" font-size="9">AGENT</text>
+          <text x="262" y="382" class="in tag" font-size="11">AGENT</text>
+          <text x="430" y="382" class="in tag" font-size="11">AGENT</text>
+          <text x="608" y="382" class="in tag" font-size="11">AGENT</text>
           <text x="430" y="456" class="job" font-size="13" font-weight="600">Unit tests, written with the code</text>
 
           <!-- leaders and jobs -->
@@ -493,7 +516,7 @@
             <text x="782" y="158">Integration: each adapter</text>
             <text x="782" y="175">against real infrastructure</text>
             <text x="782" y="192">Contract: the HTTP layer</text>
-            <text x="782" y="248">Each use case's behaviour:</text>
+            <text x="782" y="248">Each use case's behavior:</text>
             <text x="782" y="265">the definition of done</text>
             <text x="782" y="358">Each layer in isolation,</text>
             <text x="782" y="375">domain objects never mocked</text>
@@ -510,9 +533,10 @@
       </svg>
     </div>
     <figcaption>
-      Who owns each layer. Humans approve the tests that judge the work; the agent writes the tests that support it,
-      and it may never edit the first kind to make the second pass. The layers follow the testing strategy I
-      designed for an LLM product.
+      Who owns each layer. Humans approve the tests that judge the work. The agent writes the tests that support the
+      work, and it MUST NOT edit a human-approved test to make the implementation pass. The layers follow the testing
+      strategy I designed for an LLM product. Unit tests never mock domain objects: they use the real objects and replace
+      only infrastructure.
     </figcaption>
   </figure>
 
@@ -521,7 +545,7 @@
     <h3>Approved specification</h3>
     <dl>
       <dt>ID and version</dt><dd><code>orders-api/list-open-orders@v5</code></dd>
-      <dt>Risk tier</dt><dd>Medium</dd>
+      <dt>Risk tier</dt><dd>High. The endpoint enforces authentication and returns a customer's order data.</dd>
       <dt>Goal</dt><dd>Add a read-only endpoint that returns the authenticated customer's open orders.</dd>
       <dt>Path</dt><dd><code>GET /v1/customers/me/orders</code></dd>
       <dt>Authentication</dt><dd>A valid customer identity is required. Missing or invalid authentication returns 401 using the service's standard error schema: <code>{ "code": "UNAUTHENTICATED", "message": "..." }</code>.</dd>
@@ -531,7 +555,11 @@
       <dt>Response</dt><dd>Return 200 with <code>{ "items": [{ "id": "...", "name": "...", "status": "OPEN" }], "nextCursor": null }</code>.</dd>
       <dt>Order</dt><dd>Sort results in ascending order by <code>id</code>. This order is stable across pages.</dd>
       <dt>Pagination</dt><dd>Accept optional <code>limit</code> and <code>cursor</code> query parameters. Use the service's documented pagination defaults and cursor conventions. On the last page, <code>nextCursor</code> is null. Return 400 using the standard error schema for invalid pagination parameters.</dd>
-      <dt>Boundary</dt><dd>The API MUST use the existing <code>OrderRepository</code>; it MUST NOT access the database directly or introduce a new database dependency in the API layer. See <code>ADR-20261009T1530Z-order-repository-boundary</code>.</dd>
+      <dt>Boundary</dt><dd>The API MUST use the existing <code>OrderRepository</code>. It MUST NOT access the database directly or introduce a new database dependency in the API layer. See <code>ADR-20261009T1530Z-order-repository-boundary</code>.</dd>
+      <dt>Security and privacy</dt><dd>Order data is personal data. The response contains only the authenticated customer's orders. Logs MUST NOT contain order contents or customer identifiers.</dd>
+      <dt>Observability</dt><dd>Emit request count, error rate, and p95 latency for the endpoint. Alert when the 5xx rate exceeds 1% for 5 minutes.</dd>
+      <dt>Deployment and rollback</dt><dd>Release behind a feature flag. To roll back, turn the flag off. The endpoint is read-only, so rollback needs no data migration.</dd>
+      <dt>Approver</dt><dd>The service owner, named in the specification.</dd>
     </dl>
 
     <h3>Acceptance tests</h3>
@@ -582,14 +610,14 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
   </p>
   <p>
     Reproducibility means that another run can use the recorded specification, baseline, prompt template, model,
-    and agent metadata to reproduce the evaluation process and determine whether the same approved gates pass. It
+    and agent metadata to reproduce the evaluation process and determine whether the same quality gates pass. It
     does not require identical generated code.
   </p>
 
   <h2 id="identifiers">Identifiers</h2>
   <p>
     Specification and ADR identifiers MUST be unique without coordination between branches. Teams MUST NOT use
-    sequential numbers as identifiers. When two branches or parallel agents each create a record, both take the
+    sequential numbers as the unique part of an identifier. When two branches or parallel agents each create a record, both take the
     next free number, and the second merge produces a conflict or a duplicate ID.
   </p>
   <p>Use one of these formats:</p>
@@ -598,7 +626,7 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
     <li><strong>Specifications:</strong> a domain path and a slug, for example <code>orders-api/list-open-orders</code>, with the version appended as <code>@vN</code>.</li>
   </ul>
   <p>
-    The <code>@vN</code> version suffix is sequential by design. A version conflict occurs only when two branches
+    The <code>@vN</code> version suffix is different: it is a sequence inside one specification. A version conflict occurs only when two branches
     change the same specification. That is a real design conflict, and a human MUST resolve it.
   </p>
   <p>
@@ -611,7 +639,7 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
   <ol>
     <li><strong>Frame the outcome:</strong> define the goal, scope, boundaries, risks, and success measures.</li>
     <li><strong>Specify a thin slice:</strong> use agents to research, challenge assumptions, draft requirements and architecture, define the oracle, and resolve contradictions. Humans approve the specification.</li>
-    <li><strong>Generate and evaluate:</strong> give the agent one controlled implementation instruction. Let it generate, test, iterate, and produce evidence within the approved design.</li>
+    <li><strong>Generate and evaluate:</strong> give the agent one implementation prompt. Let it generate, test, iterate, and produce evidence within the approved design.</li>
     <li><strong>Review and deliver:</strong> humans review the change and evidence, resolve escalations, and approve merge or deployment at the appropriate risk boundary.</li>
     <li><strong>Improve the system:</strong> record newly discovered decisions, update repository guidance, improve quality gates, and remove recurring manual steps.</li>
   </ol>
@@ -619,47 +647,51 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
   <ul>
     <li>Clarifying outcomes and boundaries</li>
     <li>Making architecture and security decisions</li>
-    <li>Defining the behavioural oracle</li>
+    <li>Defining the behavioral oracle</li>
     <li>Creating reliable repository context</li>
     <li>Establishing enforcement and approval gates</li>
     <li>Learning from implementation failures and improving the workflow</li>
   </ul>
 
-  <h2 id="parallelisation">Parallelisation and Level 3</h2>
+  <h2 id="parallelisation">Parallelization and Level 3</h2>
   <p>
-    Level 3 enables engineers to coordinate agents working in parallel: researching architecture, drafting ADRs,
-    identifying security requirements, proposing test scenarios, investigating dependencies, preparing
-    implementation plans, generating implementations, and evaluating changes.
+    Level 3 lets engineers coordinate agents that work in parallel. The agents can:
   </p>
+  <ul>
+    <li>Research architecture and draft ADRs</li>
+    <li>Identify security requirements and propose test scenarios</li>
+    <li>Investigate dependencies and prepare implementation plans</li>
+    <li>Generate implementations and evaluate changes</li>
+  </ul>
   <p>
-    Parallelisation works only when agents share durable specifications, contracts, and evaluation criteria.
+    Parallelization works only when agents share durable specifications, contracts, and evaluation criteria.
     Otherwise, multiple agents create inconsistent interpretations of the problem.
   </p>
-  <blockquote><p>Parallel agents increase the value of shared specifications, contracts, and evaluation criteria.</p></blockquote>
 
   <h2 id="metrics">Adoption and health metrics</h2>
   <p>Teams SHOULD start with these primary metrics:</p>
   <dl>
     <dt>Specification traceability</dt><dd>Percentage of implementation pull requests linked to a specification version.</dd>
-    <dt>Human corrective prompts</dt><dd>Number of human prompts per pull request after the implementation instruction. Each corrective prompt shows that the specification or the repository context failed.</dd>
+    <dt>Human corrective prompts</dt><dd>Number of human prompts per pull request after the implementation prompt. Each corrective prompt shows that the specification or the repository context failed.</dd>
     <dt>Regeneration success</dt><dd>Percentage of regenerated change sets that pass the same approved quality gates.</dd>
     <dt>Post-merge defects</dt><dd>Defects found after merge or deployment that the specification or quality gates did not catch.</dd>
   </dl>
   <p>
-    Teams MAY add diagnostic metrics such as autonomous iterations per pull request, escalations per specification,
-    specification revisions caused by implementation failures, review rework, time from specification approval to
-    reviewed change, and reproducibility of the evaluation record. Autonomous iterations are a normal part of the
-    loop and are not a health signal on their own. Metrics exist to improve the system, not to reward teams for
-    minimising prompts at the expense of quality.
+    Teams MAY add these diagnostic metrics:
   </p>
-
-  <div class="takeaway">
-    <h2 id="takeaway">Takeaway</h2>
-    <div class="law">
-      <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
-      <p>Then with only ONE prompt: generate the code and associated unit tests.</p>
-    </div>
-  </div>
+  <ul>
+    <li>Autonomous iterations per pull request</li>
+    <li>Escalations per specification</li>
+    <li>Specification revisions caused by implementation failures</li>
+    <li>Review rework</li>
+    <li>Time from specification approval to reviewed change</li>
+    <li>Reproducibility of the evaluation record</li>
+  </ul>
+  <p>
+    Autonomous iterations are a normal part of the
+    loop and are not a health signal on their own. Metrics exist to improve the system, not to reward teams for
+    minimizing prompts at the expense of quality.
+  </p>
 
 
   <h2 id="confirmation">Independent confirmation</h2>
@@ -689,11 +721,12 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
     <figcaption>Three loops: specs, implementation and production, with production data feeding back into the specs.</figcaption>
   </figure>
   <p>
-    Pedro's L3 Law has two loops. The specs loop is humans: write and approve the specification. The
-    implementation loop is the agent: generate, evaluate, and fix the implementation inside one controlled prompt.
+    Pedro's L3 Law has two loops. Humans own the specs loop: they write and approve the specification. The agent
+    owns the implementation loop: it generates, evaluates, and fixes the implementation inside one implementation
+    prompt.
   </p>
   <p>
-    The production loop is the third loop. CI/CD ships the merged change. Live evaluation watches it against SLOs.
+    The production loop is the third loop. CI/CD ships the merged change. Live evaluation watches it against SLOs (service level objectives).
     A rollback, triggered automatically on a breach or manually by a human, redeploys the previous stable version
     through CI/CD. The root cause then always goes back to the specs loop, never straight to the implementation
     loop. If a defect reached production, the specification and its evaluations missed it. The team fixes the
@@ -706,8 +739,17 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
   </p>
   <p>
     This is the move from L3 to L4. L3 governs how code is generated from an approved spec. L4 adds how the running
-    system is observed, protected, and improved. Humans still approve every change to the specification.
+    system is observed, protected, and improved. The Agentic Engineering Framework's L4 takes humans out of the
+    active development loop. Under the L3 Law, humans still approve every change to the specification.
   </p>
+
+  <div class="takeaway">
+    <h2 id="takeaway">Takeaway</h2>
+    <div class="law">
+      <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
+      <p>Then with only ONE prompt: generate the code and associated unit tests.</p>
+    </div>
+  </div>
 
   <h2 id="resources">Resources</h2>
   <ul class="resources">
@@ -715,6 +757,7 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
     <li><a href="https://yuvalyeret.com/blog/is-spec-driven-development-a-step-forward-or-back-for-product-development/">Is Spec-Driven Development a Step Forward or Back?</a>, Yuval Yeret</li>
     <li><a href="https://lexler.github.io/augmented-coding-patterns/">Augmented Coding Patterns</a></li>
     <li><a href="https://aicoding.leaflet.pub/">The Phoenix Architecture</a>, Chad Fowler</li>
+    <li><a href="https://alejtraws.github.io/agentic-engineering-framework/adopt/maturity-path.html">Maturity path (L1–L4)</a>, Agentic Engineering Framework</li>
     <li><a href="https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html">Introducing the Elephant-Goldfish Model plugin</a>, Google Open Source Blog</li>
     <li><a href="https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction">What changes and where to start · The AI-native SDLC playbook</a>, Claude Academy</li>
   </ul>
