@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why This Series Exists: From Legacy to Agent-Ready · Pedro Santos</title>
+<meta name="description" content="A series on taking an existing codebase, one with no tests or tests nobody trusts, to the point where agents write most of the code and most changes ship without a line-by-line review. Who it is for, what it is not, and why I am writing it.">
+<meta property="og:title" content="Why This Series Exists: From Legacy to Agent-Ready">
+<meta property="og:description" content="You can trust an agent exactly as far as your codebase can verify its work.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "datePublished": "2026-11-09",
+  "headline": "Why This Series Exists: From Legacy to Agent-Ready",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">series · from legacy to agent-ready · post 0</p>
+  <h1>Why This Series Exists: From Legacy to Agent-Ready</h1>
+  <p class="byline">By Pedro Santos · November 2026 · 9 min read</p>
+
+<h2 id="the-problem">The problem</h2>
+<p>Most writing about coding with agents starts from an empty folder. Write the specification, generate the code, admire the result. It is a fine way to learn the ideas and a useless way to run a company, because almost nobody's code lives in an empty folder. It lives in a service that has been in production for six years, has a test suite that half the team ignores, and depends on a cron job that nobody has dared to touch since the person who wrote it left.</p>
+<p>Point an agent at that service, and one of two things happens. Either the team reads every line the agent produces, in which case the agent has saved nothing, or the team does not, in which case the first bad change reaches a customer. Most teams try the first for a month, then quietly go back to writing the code themselves and using the agent for autocomplete.</p>
+<p>The gap is not the model. The gap is that the codebase cannot tell anyone, human or agent, when a change is wrong.</p>
+<p>None of this is new. A codebase that cannot tell you when a change is wrong was always a problem. The tests nobody trusted, the boundaries nobody wrote down, the deploy that needed a person watching: all of it was there before the agents. What changed is the pace. When writing code was slow, it hid everything downstream. A team could only produce so many changes a week, and review, testing, and release kept up, more or less. Now an agent produces a week's worth of changes before lunch, and the steps that were always slow are suddenly the only thing anyone can see.</p>
+<p>Andy Hunt and Dave Thomas gave us the other half of the picture in <em>The Pragmatic Programmer</em>, borrowing the broken windows theory: one broken window left unrepaired tells everyone that nobody cares, and the decay spreads from there. In most legacy codebases, the windows were already broken. They were just in the parts of the building nobody walked past: the test suite people had stopped reading, the module everyone routed around, the release checklist that lived in one person's head. Agents walk past every window, every day. They read the whole codebase, take what they find as the house style, and repeat it at the speed they write. A broken window an agent has seen is no longer one broken window. It is the pattern for the next fifty changes.</p>
+<p>Eliyahu Goldratt described this forty years ago in <em>The Goal</em>. A system's throughput is set by its constraint, its one slowest step, and speeding up any other step does not make the system faster. It only piles up work in front of the constraint. For most of the history of software, the constraint looked like writing code, so that is where we put our effort: better languages, better editors, better frameworks. Agents removed that constraint almost overnight, and the constraint moved to where it had been hiding all along: understanding, verifying, and releasing a change. The pile of work in front of it is the queue of agent-written merge requests that nobody has had time to read.</p>
+<p>Goldratt's answer still applies, step for step. Find the constraint. Get the most out of it before you add anything. Make everything else serve it. Only then widen it, and look for where it moves next. A faster model widens a step that is no longer the constraint. Raising the codebase's capacity to verify a change widens the one that is. In one line: autonomy is bounded by verification capacity, not by generation capacity.</p>
+<p>There is very little that is truly new in software engineering. The practices that make a codebase safe for an agent are the ones that made it safe for a new team member: tests at the right boundary, contracts, written reasons, a pipeline that fails when something is wrong. What is new is that skipping them now costs you every day instead of every quarter. This series is about closing that gap, on code that already exists, one step at a time.</p>
+<h2 id="who-this-is-for">Who this is for</h2>
+<p>You should read this series if:</p>
+<ul>
+<li>You lead engineering at a company whose systems predate the agents, and you are being asked why the productivity you were promised has not arrived.</li>
+<li>You are a tech lead who has been handed a legacy service and an agent in the same quarter.</li>
+<li>You are a senior engineer who already knows how to make legacy code safe to change by hand and wants to know what changes, and what does not, when an agent does the typing.</li>
+<li>You have tried "let the agent rewrite it" and are still cleaning up.</li>
+</ul>
+<p>You will get the most out of it if you have shipped production software and have, at least once, been afraid to change something that worked.</p>
+<h2 id="the-thesis">The thesis</h2>
+<p><strong>You can trust an agent exactly as far as your codebase can verify its work.</strong> Put more shortly: <em>autonomy is bounded by verification capacity, not by generation capacity</em>. Not as far as the model is clever, and not as far as your prompt is detailed. As far as the repository and the runtime can tell a wrong change from a right one without a person in the loop.</p>
+<p>So the way to get an agent to do most of the work is not to find a better agent. It is to raise the codebase's capacity to verify a change: tests that would survive a rewrite, contracts a change cannot cross, rules and reasons written where the agent reads them, a pipeline where every check fails the build, and a production environment that notices a bad release and reverses it. Build those, in the right order, and the agent's autonomy rises with them. Skip them, and no model will ever be good enough.</p>
+<p>The destination is a codebase where engineers move from <em>in</em> the loop to <em>on</em> the loop. They stop approving each change before it merges and start supervising the system that approves it: they own the rules, the checks, and the gates, sample the stream, and step in on the changes that matter. On Dan Shapiro's widely shared five-level scale, that is Level 4, where you review plans and test results, not diffs. Other ladders give it other numbers; <a href="pedros-law.html#loops">Pedro's Law maps them</a>. The numbers disagree. Who is in the loop does not.</p>
+<p>In rough numbers, across a codebase, engineers hand-write about a fifth of the code and read about a fifth of the changes, and the rest ships on evidence. That is an average, not a quota. The code that moves money or guards security may still be written and reviewed entirely by people. A well-fenced adapter may be written and checked entirely by agents. The fifth is what you get when you add up a codebase where each part sits where its risk says it should.</p>
+<h2 id="what-this-series-is-not">What this series is not</h2>
+<p>It is not about greenfield projects. It starts from code that exists and runs.</p>
+<p>It is not a deep treatment of regenerative software or the Phoenix Architecture. I borrow a few ideas from Chad Fowler's series, because they are the right names for what has to be written down. The rest of that body of work is for another day.</p>
+<p>This isn't about evolving the architecture once the codebase is ready. That is a question I care about a great deal, and it deserves its own treatment. This one stops at the moment you can trust the agent with the codebase as it is.</p>
+<p>And it is not a tooling guide. I have written tools for this kind of work, and I will say so where it matters, but the aim is that you can do each step with whatever agent and whatever pipeline you already have.</p>
+<h2 id="how-to-read-it">How to read it</h2>
+<p>Think of it as a staircase. Each step should leave you with something you can check on your own codebase, so you know whether you have actually climbed it, and the steps come in an order that the work itself imposes more than I do.</p>
+<p>Everything is per component, not per company. A codebase on this path has some components that have earned trust and others that have not, and the team knows which is which. Pick one component, climb with it, then pick the next.</p>
+<p>I will write from what happened on real codebases, told without names, and I will try to end each piece with what I would do in yours.</p>
+<h2 id="why-me">Why me</h2>
+<p>I spent my first fifteen years in software learning the craft, and the last fifteen helping teams master it, first by hand and now with agents. The dated record is on <a href="https://www.linkedin.com/in/pedros/">LinkedIn</a>; the short version follows.</p>
+<p><strong>The work, by hand.</strong> Full time since 2014, when I joined Codurance as a Principal Consultant and started doing this on other people's production systems: seams, characterization tests, contracts, decision records, one component at a time, with the code of a team that was still shipping around me. Embedded in the teams at Société Générale in London. Two years at ASOS on warehouse, logistics, and web platforms, then a year as a principal engineer on orders, bag, pricing, and promotions—a migration strategy from an e-commerce monolith to a distributed cloud system at Mango. Then, through the company I co-founded, I did technical coaching at Wallapop and led architecture at Iberia. I used the method in the legacy-code chapters of <em>Agile Technical Practices Distilled</em>, and I still use it.</p>
+<p><strong>The work, with agents.</strong> At Vista, a large company where I am a Distinguished Engineer, and at Refine, a small startup where I am the senior engineering advisor, I led major refactors of existing codebases. In each case, the first move was not the refactor. It was bringing the codebase to a state where agents could work on it safely, and only then letting them do most of the typing. At Refine, the starting point was a Python command-line prototype written by two economists, domain-rich and without the engineering foundations to scale; in three months, with a team of one to three and agents driving every step, it became a distributed, highly available cloud system, and the tests and the architectural boundaries were what made each jump survivable. At Vista, I also co-authored the framework that defines engineering excellence for the entire engineering organization, drafted its testing rubric, and wrote a set of agent skills that run the legacy-code workflow end to end. I wrote Pedro's Law, the rule for how code gets generated from an approved specification.</p>
+<p><strong>Teaching and speaking.</strong> I am the principal author of <em>Agile Technical Practices Distilled</em> (Packt), with Marco Consolaro and Alessandro Di Gioia. At Codurance, I redesigned its apprenticeship program and ran its first iteration. I maintain kata starter kits for legacy-code practice in nine languages, and I built a three-day workshop on building, repairing, and evolving software with agents, which I have run three times at Vista with three different teams. I have been speaking at conferences and software engineering communities across Europe since 2014: SoCraTes in the UK, Germany, Belgium, Italy, and Spain; Software Crafters Barcelona and Pamplona; DDD Europe, KanDDDinsky, Agile Spain, Agile Portugal, SPA, I T.A.K.E. Unconference, Code Freeze, and the Barcelona and London software crafters communities before that. Most recently, I gave a talk on it at Software Crafters Barcelona 2026.</p>
+<p>I do not think any of that makes me right. I think it means I have made most of the mistakes this series warns about, on real systems, and paid and learned from most of them. That is what I have to offer.</p>
+<h2 id="whats-next">What's next</h2>
+<p><a href="agent-ready-1-what-agent-ready-means.html">The first post</a> defines legacy for the age of agents, and shows why a tested codebase with high code quality can still be legacy by that definition. Start there.</p>
+<p>Let's make it engineering.</p>
+<h2 id="sources">Sources</h2>
+<ul class="resources">
+<li>Pedro Santos, <a href="pedros-law.html">Pedro's Law: Specifications First, Code Second</a>.</li>
+<li>Pedro Santos, Marco Consolaro, Alessandro Di Gioia, <a href="https://leanpub.com/agiletechnicalpracticesdistilled">Agile Technical Practices Distilled</a> (Packt, 2019).</li>
+<li>Chad Fowler, <a href="https://aicoding.leaflet.pub/">The Phoenix Architecture</a>.</li>
+<li>Dan Shapiro, <a href="https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/">The Five Levels: from Spicy Autocomplete to the Dark Factory</a> (January 2026).</li>
+<li>Andrew Hunt and David Thomas, <em>The Pragmatic Programmer</em> (1999). Software entropy and the broken windows theory.</li>
+<li>Eliyahu M. Goldratt, <em>The Goal: A Process of Ongoing Improvement</em> (1984). The theory of constraints and its five focusing steps.</li>
+<li>Michael Feathers, <em>Working Effectively with Legacy Code</em> (2004).</li>
+</ul>
+<p class="aside">How this was written: I used AI heavily to draft, edit, and polish this article. The ideas are mine, and so is the responsibility for every word. <a href="how-i-write.html">Why I am unapologetic about it.</a></p>
+
+  <div class="cta">
+    <p>Want help taking your codebase there?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>

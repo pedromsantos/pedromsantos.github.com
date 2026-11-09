@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working Backward from Three Yeses: The Map of the Series · Pedro Santos</title>
+<meta name="description" content="The whole path from legacy to agent-ready as one tree, built backward from three goals. Each branch answers &quot;what would have to be true?&quot;; each leaf is one piece of work with a check, and the dependencies between leaves give you the order.">
+<meta property="og:title" content="Working Backward from Three Yeses: The Map of the Series">
+<meta property="og:description" content="The path from legacy to agents you can trust, as one tree built backward from three goals. The dependencies between the leaves give you the order.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "datePublished": "2026-11-09",
+  "headline": "Working Backward from Three Yeses: The Map of the Series",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">series · from legacy to agent-ready · post 2</p>
+  <h1>Working Backward from Three Yeses: The Map of the Series</h1>
+  <p class="byline">By Pedro Santos · November 2026 · 13 min read</p>
+
+<h2 id="start-from-the-end">Start from the end</h2>
+<p>The first post left you with a table: every component you own, three questions, mostly noes.</p>
+<p>Can you merge a change an agent made to it without reading every line? Can you get that change implemented from one prompt, or does it take ten? Can you release that change without anyone watching production?</p>
+<p>The natural next move is to ask "what should we buy, or install, or adopt?" Resist it. Every roadmap I have seen starts with the tools, ends with the tools in place, and leaves the three answers unchanged. The roadmaps that worked started from the other end: from the day the team could stop reading the diffs, and asked what had to be true the day before that. Then the day before that.</p>
+<p>This post does that, all the way down. It maps the series. Every post that follows is one leaf of this tree, and the posts come in the order they do because of the tree's dependencies, not my preferences.</p>
+<h2 id="the-method-a-goal-tree-built-backward">The method: a goal tree, built backward</h2>
+<p>Working backward needs one question and one stopping rule.</p>
+<p>The question is: <strong>what would have to be true for this to be a yes?</strong> You ask it of a goal and get sub-goals. You ask it of a sub-goal and get smaller ones.</p>
+<p>The stopping rule is: <strong>stop when the answer is one piece of work with a check you can run.</strong> "Tests that survive a rewrite" is not a leaf, because you cannot tell on Monday whether you have it. "The mutation score for this component is above the gate, and every survivor is classified" is a leaf. You can run it. It is also, not by coincidence, the kind of thing an agent can run for you.</p>
+<p>Two warnings before the tree. First, it is for one component, not a system. Pick the component that hurts most, or the one where an agent could help most, and draw its tree. The last post of the series explains how to keep many trees honest at once. Second, the tree is not a project plan. Branches are drawn as independent because they are logically independent. The order you work them in comes later, from the dependencies between leaves.</p>
+<p>None of this is new, and I did not invent it. Working backward from a goal is Goldratt's again: H. William Dettmer's Goal Tree, from Goldratt's Thinking Processes, asks what must be true for a goal, then what must be true for that, until the answer is something you can act on. Gojko Adzic's Impact Mapping applies the same backward walk to product goals, through the people whose behavior has to change. The Mikado Method applies it to code: start from the change you want, find what blocks it, and work back to the prerequisites that nothing blocks. I am only applying it to the three yeses.</p>
+<h2 id="the-tree">The tree</h2>
+<pre><code class="language-text">GOAL A  Merge an agent's change without reading every line
+├── A1  There is a definition of right
+│   └── rules with an ID and a reason, each traced to a check
+├── A2  There is an oracle the change cannot fake
+│   ├── behavior tests at a stable boundary, not in the guts
+│   ├── the code can be put in a harness (seams; the clock, randomness and IO faked)
+│   ├── the existing tests do not lie (test smells found and fixed)
+│   └── the suite is verified by mutation testing, survivors classified
+├── A3  There are boundaries the change cannot cross
+│   ├── a machine-readable contract, with one owner per piece of data
+│   ├── the hidden clients are counted
+│   └── fitness functions fail the build on a crossed boundary
+├── A4  The agent cannot edit the judge
+│   └── tests, contracts and decisions are read-only to an implementation change, enforced in CI
+├── A5  Every check fails the build
+│   └── lint, types, static analysis, security scan, coverage threshold: none can be ignored
+└── A6  The reviewer reads evidence, not diff
+    ├── an evidence pack per change
+    ├── deterministic checks first, judgment calls second, synthesis last
+    └── risk tiers decide which changes merge on the pack alone
+
+GOAL B  Implement a change from one prompt
+├── B1  The rules are written where the agent reads them        (shares A1)
+├── B2  The boundaries are written where the agent reads them   (shares A3)
+│   └── one vocabulary, one meaning per term
+├── B3  The reasons are written down
+│   ├── the history is reconstructed (what changed, when, why, with confidence)
+│   └── every scar has a decision record with its rejected alternatives
+├── B4  The repository says how to work
+│   └── one short file: the commands, the conventions, always / ask first / never
+├── B5  The build gives green or red in one command
+│   └── a deterministic, headless build, runnable in a sandbox
+└── B6  There is a way to stop
+    └── one escalation format, and a person to escalate to
+
+GOAL C  Release the change without anyone watching production
+├── C1  The deploy is automated and reversible
+│   └── one step forward, one step back, a smoke test in between
+├── C2  Telemetry is linked to the rules
+│   ├── technical signals: errors, latency, anomalies
+│   ├── business signals: the numbers the change was meant to move
+│   └── an alert names the rule it protects, not only the metric that moved
+└── C3  Rollback does not wait for a meeting
+    └── a breached threshold, technical or business, restores the previous version; the cause goes to the specification</code></pre>
+<p>Three goals, fifteen sub-goals, and a little over twenty leaves. Each leaf becomes a post. Here is what the branches mean and, more usefully, what they depend on.</p>
+<h2 id="goal-a-merge-without-reading">Goal A: merge without reading</h2>
+<p><strong>A1, a definition of right.</strong> A check can only say "wrong" against something. If the only reference is the old code, every check is a regression test against yesterday, and yesterday is not the truth. The leaf is a specification: rules with identifiers and reasons, each traced to a test. On legacy code, you do not write this first. You recover it from the tests you write for the oracle, and you give every recovered rule a status: observed, accepted, or contested. That ordering matters and I will come back to it.</p>
+<p><strong>A2, an oracle the change cannot fake.</strong> This is the branch with the most leaves because it is where legacy code fights back. Behavior tests at a stable boundary depend on being able to put the code in a harness at all, which depends on breaking the dependencies that stop you: the eleven smells that prevent testing, and the three that defeat everyone (the clock, random numbers, and the network). If tests already exist, they need auditing first, because a suite that asserts mocks were called protects nothing. And when the tests exist, mutation testing tells you whether they would catch a real fault. The dependencies run strictly downward: smells before seams, seams before tests, tests before mutation.</p>
+<p><strong>A3, boundaries the change cannot cross.</strong> A contract, an owner for every piece of data, and a census of the hidden clients: the mobile app that still calls the old route, the team that reads your file. Then fitness functions that fail the build when a dependency points the wrong way. The dependency here is subtle. You must <em>know</em> where the boundary is before you write the oracle's tests, because characterization tests at the wrong seam die on the first real change. You can <em>formalize</em> it after, once the tests tell you what actually crosses it.</p>
+<p><strong>A4, the agent cannot edit the judge.</strong> Everything above is worthless if an implementation change can modify the tests to go green. The leaf is mechanical: protected paths, a CI check that fails any implementation change touching an oracle file, sandbox permissions. Prompt text does not count. It depends on nothing except the oracle existing, and it must be in place before the first controlled prompt under goal B.</p>
+<p>The core of it fits in one line of CI. Git already knows which files a change touches, so the check is deterministic: the same change gives the same answer every time.</p>
+<pre><code class="language-sh"># Fail any implementation change that edits the oracle.
+git diff --quiet origin/main...HEAD -- spec/ tests/acceptance/ contracts/ decisions/ \
+  || { echo "This change edits the oracle. Rule and test changes go through their own reviewed change."; exit 1; }</code></pre>
+<p><code>git diff --quiet</code> exits non-zero when anything under those paths differs from the main branch, so the build fails before anyone reads a line. Changing a rule or a test is still allowed; it just has to arrive as its own change, reviewed by a person, never inside the change that has to pass it. Pair it with a CODEOWNERS entry on the same paths, so that the separate change needs the right reviewer, and with sandbox permissions, so that the agent cannot write there in the first place.</p>
+<p><strong>A5, every check fails the build.</strong> The cheapest branch and usually the first one I do, because it needs no understanding of the code. Linting, types, static analysis, security scanning, a coverage threshold, each ratcheted from "runs somewhere" to "cannot merge". It depends only on the one-command build.</p>
+<p><strong>A6, evidence instead of diff.</strong> The branch that actually changes the reviewer's day. An evidence pack per change (every gate, the mutation score, the agent's list of what no test reaches, any escalation), three tiers of review (deterministic rules, calibrated judgment calls, synthesis), and risk tiers that say which changes may merge on the pack alone. It depends on the oracle, the boundaries, the read-only judge, and the failing gates all existing, because a pack of missing evidence is a form. And the auto-merge part depends on goal C, which is the point of goal C.</p>
+<h2 id="goal-b-one-prompt">Goal B: one prompt</h2>
+<p>Goal B shares its first two branches with A. I come back to what that means below, because it is the most important thing the tree shows.</p>
+<p><strong>B3, the reasons are written down.</strong> The corrections you type most often are "no, that timeout is there because…". The leaves are archaeology and decision records. Archaeology, reconstructing what changed and when and why from git and comments, is read-only and safe on the first day, which is why it is near the start of the series despite sitting under goal B. The decision records come from it: one per scar, with the alternatives rejected, numbered with a timestamp and not a sequence because agents and branches collide.</p>
+<p><strong>B4, the repository says how to work.</strong> One short file with the exact commands, the conventions that differ from the language defaults, and three lists: always, ask first, never. Short because every line costs attention on every session. It depends on the one-command build (there have to be commands to write down) and on the conventions being known, so it comes late in the series even though it feels like a day-one task.</p>
+<p><strong>B5, one command for green or red.</strong> The root of everything. You can't check any leaf in the tree without it. Deterministic, headless, runnable in a sandbox from a clean checkout. In my experience, it's also the step most often skipped in writing about agents, because the examples are built on code that already has it.</p>
+<p><strong>B6, a way to stop.</strong> When the agent finds the specification contradictory or incomplete, it needs a format to say so and a person to say it to. Otherwise, it improvises, and corrective prompts come from improvisation. One escalation format, agreed once.</p>
+<h2 id="goal-c-release-without-watching">Goal C: release without watching</h2>
+<p>Goal C has the fewest leaves and the largest effect on goal A, because it is what makes merging on evidence defensible. The evidence will miss things. The question is who finds out: a customer, or the system.</p>
+<p><strong>C1, a reversible deploy</strong> with a smoke test that fails the release. <strong>C2, telemetry linked to rules</strong>, and the telemetry has two kinds of signal. The technical kind: errors, latency, anomalies in the shape of traffic. And the business kind: the numbers the change was meant to move, or must not move, such as orders completed, sign-ups, or payments that go through. A change can be technically green and still be wrong, and only the second kind of signal tells you. Either way, the alert says which rule was violated, not only which metric moved, so a person or an agent can act without a diagnosis first. <strong>C3, rollback without a meeting</strong>: a breached threshold, technical or business, restores the previous version, with the root cause routed to the specification and never straight to a code patch.</p>
+<p>Goal C depends on nothing in A or B. You can build it on a legacy component before a single test exists, and some teams should. But merging on evidence depends on it, which is why the series puts it just before the review tiers.</p>
+<h2 id="written-once-used-twice">Written once, used twice</h2>
+<p>Look back at the tree and notice that two branches appear under both A and B. The definition of right appears under the first goal and again under the second. So do the boundaries. That is not a drawing shortcut. It is the most important thing the tree shows.</p>
+<p>The same files do two jobs. Read one way, the specification is the judge: a check names the rule it enforces, and a change that breaks the rule fails. Read the other way, it is the input: the agent reads the rule before it writes a line, and does not have to be told it in a prompt. The contract is the same. It is the fence the change cannot cross, and it is the description of the fence that the agent reads so that it does not try.</p>
+<p>This is why teams that write specifications and contracts "as documentation" get neither benefit. A document that nothing checks does not judge, and a document the agent is not pointed at does not inform. The leaves under the definition of right and the boundaries are written so that both uses hold at once: rules with identifiers that tests cite, and contracts in a form a tool can validate, and an agent can read.</p>
+<p>It also explains why the same work pays twice. Every rule you recover from a characterization test, every decision you record, closes one gap in the judge and removes one corrective prompt from the agent's future. That is the leverage the whole series runs on.</p>
+<h2 id="what-the-dependencies-give-you-the-order">What the dependencies give you: the order</h2>
+<p>Lay the leaves out by what they depend on, and an order falls out. It is not the only valid order, but every alternative I have tried violates a dependency.</p>
+<ol>
+<li><strong>Diagnose.</strong> Classify the component (business domain, integration, or plain CRUD; the depth of everything below depends on it), pick the one that goes first, and run the read-only archaeology. Nothing is changed yet.</li>
+<li><strong>Build the safety net.</strong> The one-command build first, because everything needs it. Then the gates that fail the build, because they are cheap. Then the oracle, in its own order: find the smells, break them with seams, fake the clock and the random number generator, audit the tests that exist, characterize at the boundary, verify with mutation.</li>
+<li><strong>Write down what the code knows.</strong> Formalize the boundaries: the contract, the hidden clients, the data owners, the fitness functions. Recover the rules from the tests, with each rule's status. Turn the archaeology into decision records. Write the repository's one-page guide for agents.</li>
+<li><strong>Hand over.</strong> The first controlled implementation prompt on a low-risk change, with the judge made read-only before it runs and the way to stop agreed. Build the reversible deploy, the rule-linked telemetry, and the automatic rollback. Then the evidence pack, the review tiers, and the risk tiers that let the first changes merge unread.</li>
+<li><strong>Prove and scale.</strong> Regenerate the component from its files alone and see what the regeneration gets wrong; that list is what you still have not written down. Then keep the ledger that says, per component, which leaves are done and which yeses are earned.</li>
+</ol>
+<p>Under this order runs a second one, for the agent. It is first allowed to read (step 1), then to write tests (step 2), then to write documents (step 3), then to write code under a judge it cannot edit (step 4), and only then to merge without a line review (step 5). Each step raises the agent's autonomy exactly as far as the verification built in the previous step allows, because autonomy is bounded by verification capacity, not by generation capacity. That sentence is the whole series. Rung by rung, it is the move from <em>in</em> the loop to <em>on</em> the loop.</p>
+<h2 id="what-i-would-do-in-your-codebase-this-week">What I would do in your codebase this week</h2>
+<p>Take one component from last week's table, the one with three noes that matters most. Draw its tree. Use mine as the template and cross out any leaf that doesn't apply; a CRUD service doesn't need all of them.</p>
+<p>Then mark every leaf as done or not done. Be strict: "we have a linter" is not done unless the linter can fail the build; "we have tests" is not done unless you know their mutation score.</p>
+<p>Now look at the undone leaves nearest the roots: the one-command build, the gates that fail the build, and the archaeology that recovers the reasons. Those are your first three milestones, and none of them requires anyone to understand the code yet. That is where I would start on Monday, and it is where the next posts go.</p>
+<p>The next one is about the move you will be tempted to make instead.</p>
+<p>Let's make it engineering.</p>
+<h2 id="sources">Sources</h2>
+<ul class="resources">
+<li>Pedro Santos, <a href="pedros-law.html">Pedro's Law: Specifications First, Code Second</a>. The specs loop, the implementation loop, read-only oracles, and escalation.</li>
+<li>Michael Feathers, <em>Working Effectively with Legacy Code</em> (2004). Seams, the smells that prevent testing, characterization tests.</li>
+<li>Chad Fowler, <a href="https://aicoding.leaflet.pub/3mjfruwwuck2d">The Phoenix Primitives</a>, <a href="https://aicoding.leaflet.pub/3md5ftetaes2e">The Deletion Test</a>, <a href="https://aicoding.leaflet.pub/3mb526js42k26">Evaluations Are the Real Codebase</a>, and <a href="https://aicoding.leaflet.pub/3mgfsrk75ac2l">Compile to Architecture</a>, in the Phoenix Architecture series. The four primitives, the regeneration test for checks, and data ownership as the reliable seam.</li>
+<li>H. William Dettmer, <em>The Logical Thinking Process: A Systems Approach to Complex Problem Solving</em> (2007). The Goal Tree, a version of Goldratt's Thinking Processes.</li>
+<li>Gojko Adzic, <a href="https://www.impactmapping.org/">Impact Mapping: Making a Big Impact with Software Products and Projects</a> (2012).</li>
+<li>Ola Ellnestam and Daniel Brolund, <a href="https://www.manning.com/books/the-mikado-method">The Mikado Method</a> (Manning, 2014).</li>
+<li>Addy Osmani, <a href="https://addyosmani.com/blog/software-factories/">Software Factories, Light and Dark</a>. Verification capacity bounds autonomy.</li>
+<li>Pedro Santos, Marco Consolaro, Alessandro Di Gioia, <a href="https://leanpub.com/agiletechnicalpracticesdistilled">Agile Technical Practices Distilled</a>. The legacy-code chapters.</li>
+</ul>
+<p class="aside">How this was written: I used AI heavily to draft, edit, and polish this article. The ideas are mine, and so is the responsibility for every word. <a href="how-i-write.html">Why I am unapologetic about it.</a></p>
+
+  <div class="cta">
+    <p>Want help taking your codebase there?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>

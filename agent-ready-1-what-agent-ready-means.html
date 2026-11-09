@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What &quot;Agent-Ready&quot; Means, and Why High-Quality Code Isn&#x27;t Enough · Pedro Santos</title>
+<meta name="description" content="Three questions define legacy code for the age of agents: can you merge an agent&#x27;s change without reading every line, can you implement a change from one prompt, and can you release it without anyone watching production? High code quality answers none of them. Verification does.">
+<meta property="og:title" content="What &quot;Agent-Ready&quot; Means, and Why High-Quality Code Isn&#x27;t Enough">
+<meta property="og:description" content="Can you merge an agent&#x27;s change without reading every line? Implement it from one prompt? Release it without anyone watching? If not, your code is legacy, whatever its quality.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "datePublished": "2026-11-09",
+  "headline": "What \"Agent-Ready\" Means, and Why High-Quality Code Isn't Enough",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">series · from legacy to agent-ready · post 1</p>
+  <h1>What "Agent-Ready" Means, and Why High-Quality Code Isn't Enough</h1>
+  <p class="byline">By Pedro Santos · November 2026 · 13 min read</p>
+
+<h2 id="three-questions">Three questions</h2>
+<p>Pick one component of a system you own. Not the whole system. One service, one module, one package. Now answer three questions about it.</p>
+<p><strong>Can you merge a change an agent made to it without reading every line?</strong></p>
+<p><strong>Can you get that change implemented from one prompt, or does it take ten?</strong></p>
+<p><strong>Can you release that change without anyone watching production?</strong></p>
+<p>The third one needs a word of explanation. Not watching is not optimism. It is knowing that if the change is wrong, something other than a customer will tell you, and something other than you will roll it back. Telemetry that shows the behavior the change was meant to produce, technical and business alike: not only errors and latency, but the orders, sign-ups, or payments the change was supposed to help and must not hurt. A deploy that is automated and reversible. Enough of both that an agent, or a plain alert, can spot strange behavior in production and roll back to the previous version without anyone having to step in. If the answer is "I would keep an eye on the dashboards", that is a no.</p>
+<p>If the answer to any of the three is no, the component is legacy. Its age doesn't matter. It does not matter how high its code quality is. It does not matter that it has tests, that it shipped last week, or that the team who wrote it still sits next to you.</p>
+<p>That is the definition this series uses, and the rest of it is the path from three noes to three yeses: from being <em>in</em> the loop on every change to being <em>on</em> the loop for most of them.</p>
+<h2 id="why-the-usual-definition-stopped-working">Why the usual definition stopped working</h2>
+<p>For most of my career, legacy meant one thing: code without tests. Michael Feathers gave us that definition in 2004, and it carried the industry for twenty years. I taught it in workshops. I built kata starter kits around it. I put it in a book. It is a good definition for a world where people write all the code, because the test suite is what lets a person change code without fear.</p>
+<p>Agents changed who writes the code, and that changed what the fear and the frustration look like.</p>
+<p>When an agent proposes a change, the fear is not "will this break something I cannot see." It is "do I have to read all of this?" An agent can produce a four-hundred-line change in the time it takes you to get coffee. If the only way to know the change is right is to read it, the agent has not saved you anything. It has moved the work from your keyboard to your eyes, your memory, and your judgment: reading every line, remembering everything that line might touch, and deciding whether it is right. All three are slower than typing ever was.</p>
+<p>And when you ask an agent to implement a change, the frustration is not "will it understand me." It is "how many times will I have to correct it?" If every change needs a conversation of corrections, the agent didn't have the knowledge it needed. It was in your head, and you spent the conversation typing it out, one correction at a time.</p>
+<p>And when a change ships, the fear used to be "did we test enough?" With an agent producing changes faster than anyone can test by hand, the fear becomes "will I find out from a customer?" If the only thing watching production is a person, the release rate is capped at how much one person can watch.</p>
+<p>So the three questions are not new. They are the same questions Feathers asked, about a different author and a faster clock. Can this code be changed safely by someone who does not already know everything about it? The someone used to be the new team member. Now it is the agent.</p>
+<h2 id="high-code-quality-answers-none-of-the-three">High code quality answers none of the three</h2>
+<p>Here is the uncomfortable part. The codebases I have been asked to prepare for agents, at a large company and at a small startup, were not the worst code I had seen. Some had high code quality: good names, small functions, sensible layers, decent coverage. By the standards I spent years teaching, they were fine.</p>
+<p>None of them passed the three questions.</p>
+<p>In my three-day workshop on building, repairing, and evolving software with agents, which I have now run three times with three different teams, the first morning ends with a question that participants find annoying, because they have just spent an hour building a tested, working system with high code quality with an agent and are rather pleased with it:</p>
+<blockquote><p>The code quality is high, it has tests, and it is correct today. Is that enough?</p></blockquote>
+<p>No, because code quality is a property of the code, while the three questions are about what surrounds it.</p>
+<p>Take trust. To merge an agent's change without reading it, something other than your eyes has to catch a wrong change. Tests that would fail. A contract the change cannot violate. A rule the change must follow, written down somewhere the agent can read it, and a check can enforce it. High-quality code has none of these by virtue of its quality. A beautifully named function with no test is exactly as dangerous to an agent as an ugly one.</p>
+<p>Take the one prompt. To implement a change from one prompt, the agent needs the rules of the system, the shape of its boundaries, and the reasons behind its odd corners, all in files it can read. High-quality code makes those easier to infer. It does not make them present. The reasons, in particular, are rarely in the code, because the code records what was decided and not why. Every time an agent guesses a why and guesses wrong, you type a correction.</p>
+<p>Take release. Nothing in the code itself, however high its quality, tells you whether its effect is visible in production, whether the deploy that carries it can be undone in one step, or whether anyone, human or agent, would notice if it misbehaved at three in the morning. Those are properties of the pipeline and the runtime, and a codebase can be spotless and have neither.</p>
+<p>In all three cases, the checks should be deterministic wherever they can be. A test, a schema validation, a linter rule, an architecture test, a smoke test, a rollback threshold: each gives the same answer every time it runs, whoever or whatever wrote the change. That matters, because the checks are now judging work done by a model, and a model's output varies from run to run. The judge should not. Where a rule genuinely needs judgment, use adversarial review: a second agent, in a fresh context, with no stake in the change, whose job is to find what is wrong with it. And make both agents, the one that wrote the change and the one that reviews it, answer to the same deterministic checks first, so that the judgment call is the last step, on a much smaller question, and not the only one.</p>
+<h2 id="in-the-loop-on-the-loop-and-why-80">In the loop, on the loop, and why 80%</h2>
+<p>The destination has no industry-standard name, and the numbers people use for it disagree. The most widely shared ladder, Dan Shapiro's five levels, puts it at Level 4: you write and argue the specification, and you review plans and test results, not diffs. His Level 3 is the engineer who reviews every diff, and he notes that almost everyone tops out there. Other ladders number it differently again; <a href="pedros-law.html#loops">Pedro's Law maps them</a>. The numbers disagree. What does not change is where the people are. The engineer moves from <em>in</em> the loop, approving each change before it merges, to <em>on</em> the loop, supervising the system that approves it.</p>
+<p>I define being on the loop by two numbers.</p>
+<p>On the loop, engineers hand-write about 20% of the code. The agent writes the rest.</p>
+<p>On the loop, engineers line-review about 20% of merge requests. The rest merge on evidence.</p>
+<p>Those two numbers are the first two questions, turned into targets. "Merge without reading every line" becomes "80% of changes merge on evidence." "Implement from one prompt" becomes "80% of the code is written by an agent from one controlled prompt, with the agent iterating inside that prompt rather than you iterating outside it."</p>
+<p>The third question has no percentage, because it is the condition that makes the first number defensible. You can only let 80% of changes merge on evidence if the 20% of defects the evidence misses are caught in production by something other than a customer and reversed by something other than a meeting. Without that, merging on evidence is not trust. It is hope.</p>
+<p>I want to be precise about what being on the loop is not. It is not an agent with no one watching. Humans still own the specification. Humans still approve every change to a rule, a contract, or a decision record. Humans still read the 20% that touches something that cannot be undone. What changes is where human time goes: upstream, deciding what the system should do and how you would know, instead of downstream, reading what the agent did.</p>
+<p>And the 80% is an average, not a quota. Inside one codebase where the team is on the loop, the spread is wide. The code that moves money, guards security, or cannot be rolled back may still be 100% written and 100% reviewed by people, on purpose. A well-fenced adapter behind a stable contract may be 100% written and 100% checked by agents. Most code sits somewhere in between. The two numbers are what you get when you add it all up, and each part sits where its risk says it should, not where a target says it must. What matters is that the team knows, for each part, which of the two it is and why.</p>
+<h2 id="the-gap-is-verification-not-intelligence">The gap is verification, not intelligence</h2>
+<p>When a team tells me their agent "is not good enough yet" for their codebase, I ask them to try an experiment. Take the same agent, the same model, and point it at a small, well-tested library with a clear contract. It does fine. Point it at the legacy service. It flails.</p>
+<p>The agent did not get dumber between the two. The second codebase cannot tell it when it is wrong.</p>
+<p>This is the thesis the whole series rests on: <strong>autonomy is bounded by verification capacity, not by generation capacity.</strong> Agents can already generate far more code than any team can verify. The constraint on how much of that code you can accept is how much of it the repository and the runtime can check without you. Addy Osmani put it plainly: the safety net has to live outside the model, because the model will not supply it.</p>
+<p>So "make the codebase agent-ready" does not mean "make the code nicer for the agent." It means "raise the codebase's capacity to verify a change without a person." Every post after this one raises that capacity by one step.</p>
+<h2 id="what-verification-is-made-of">What verification is made of</h2>
+<p>Verification has two parts, and most teams I meet have invested in half of one.</p>
+<p>The first part makes a change <strong>judgeable</strong>. For a check to say whether a change is right, it needs a definition of right held somewhere other than the old code. Chad Fowler's Phoenix Architecture names four artifacts that together hold that definition, and I use his names. The <strong>Specification</strong>: the rules the system follows and the reasons for them, each rule with an identifier so a check can name it. The <strong>Evaluation</strong>: the checks every correct version must pass, behaviour tests at a stable boundary and fitness functions that guard the structure. Fowler's test for this one is the sharpest tool in the series: if you rewrote the system in another language, would the checks still be valid? If not, they check the implementation, not the behavior, and the agent's first real change kills them. The <strong>Context Boundary</strong>: the contracts other systems depend on, machine-readable, with one owner for each piece of data and one meaning for each term. And the <strong>Provenance</strong>: why the system has the shape it has, as decisions with the alternatives that were rejected.</p>
+<p>Delete the code and keep these four, and you can rebuild the system. Delete any one of the four, and you cannot. That is Fowler's Deletion Test, and in the age of agents it is also a readiness test. A codebase that passes it has written down what an agent needs to know. A codebase that fails it keeps that knowledge in people, and people become the bottleneck.</p>
+<p>The second part makes the judgement <strong>automatic</strong>, before and after the merge. The four primitives define right and wrong. The pipeline and the runtime around them apply the definition to every change without a person: linting, formatting, and static analysis; a CI pipeline that runs every check on every change; security and dependency scanning; deployment smoke tests and automated rollback; telemetry, technical and business, that catches what the gates missed.</p>
+<p>At Vista, I co-authored the framework that defines engineering excellence for the whole engineering organization. It grades every practice at three levels, and the levels are what matter here. At the lowest level, a check is run by hand. At the middle level, it runs in the pipeline. At the top level, <strong>the build fails when it fails</strong>.</p>
+<p>Only the top level counts for any of the three yeses. A linter that reports warnings is advice, and an agent ignores advice, exactly as the humans before it did. A test suite that runs but cannot fail the build is a dashboard. A coverage number nobody gates on is a decoration. A rollback that needs a person is a plan. The question for every check you have is the same: if an agent's change makes this worse, can the change still ship? If yes, the check is not protecting you.</p>
+<p>Which brings the post back to its thesis: autonomy is bounded by verification capacity, not by generation capacity. So, in one sentence: an agent-ready codebase has the four primitives written down, and every check that can be automated, before and after the merge, fails the build. The primitives make a change judgeable. The pipeline makes the judgment automatic. Neither alone gets you to three yeses.</p>
+<p>What, concretely, has to be true under each yes for that sentence to hold is the next post. It takes the three yeses and works backward, goal by goal, to the individual steps, and the dependencies between those steps dictate the order of everything that follows.</p>
+<h2 id="ai-amplifies-what-is-already-there">AI amplifies what is already there</h2>
+<p>One belief from that excellence framework belongs in this post, because it is the belief behind the whole series.</p>
+<p>AI is an amplifier. It amplifies excellence and mediocrity with equal enthusiasm. Point an agent at a codebase with a real oracle, enforced boundaries, and recorded reasons, and it produces more good code faster than any team I have worked with. Point it at a codebase with none of those, and it produces more of whatever that codebase already was, faster, with the same confidence.</p>
+<p>This is why "just let the agent rewrite it" fails, which gets its own post soon. And it is why the order of work matters. You do not get on the loop by adopting a better model. You get there by building, one step at a time, the verification that lets any model be trusted.</p>
+<p>I spent the first part of my career doing that by hand: seams, characterization tests, contracts, decision records, one component at a time. I now do it with agents doing most of the typing, and the steps are the same. What changed is that the steps got faster, and that skipping them got more expensive.</p>
+<h2 id="what-i-would-do-in-your-codebase-this-week">What I would do in your codebase this week</h2>
+<p>Do not start a transformation. Start with a list.</p>
+<p>Take every component you own and ask the three questions of each. Write the answers down, yes or no, with one line of evidence for each. Resist the urge to say "partly." A component where an agent's change needs a full read is a no, even if the read is quick. A component where a change needs three corrective prompts is a no, even if the corrections are small. A component you would release and then watch is a no, even if you have never had to roll it back.</p>
+<p>You will end up with a short table. Most of it will say no, no, no. That is not a judgment on your team. It is the starting point, and it is the same starting point I have seen at a company with hundreds of engineers and at a startup with six.</p>
+<p><a href="agent-ready-2-working-backwards-from-three-yeses.html">The next post</a> takes the three yeses all the way down, from goals to sub-goals to the concrete steps, and that tree is the map of this series. The one after it is about the move everybody wants to make from your table, and why it is the wrong one. Then the three-question list becomes a proper scorecard, graded on the four primitives and the engineering pillars, so you know not just which components are legacy but which step each one needs first.</p>
+<p>Let's make it engineering.</p>
+<h2 id="sources">Sources</h2>
+<ul class="resources">
+<li>Pedro Santos, <a href="pedros-law.html">Pedro's Law: Specifications First, Code Second</a>. The two numbers, the specs loop, and the implementation loop.</li>
+<li>Michael Feathers, <em>Working Effectively with Legacy Code</em> (2004). The original definition: legacy code is code without tests.</li>
+<li>Dan Shapiro, <a href="https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/">The Five Levels: from Spicy Autocomplete to the Dark Factory</a> (January 2026). The most-cited autonomy ladder; its Level 4 is this series' destination.</li>
+<li>Chad Fowler, <a href="https://aicoding.leaflet.pub/3mjfruwwuck2d">The Phoenix Primitives</a> and <a href="https://aicoding.leaflet.pub/3md5ftetaes2e">The Deletion Test</a>, in the Phoenix Architecture series.</li>
+<li>Chad Fowler, <a href="https://aicoding.leaflet.pub/3mb526js42k26">Evaluations Are the Real Codebase</a>. The language-reimplementation test for checks.</li>
+<li>Addy Osmani, <a href="https://addyosmani.com/blog/software-factories/">Software Factories, Light and Dark</a>. The safety net has to live outside the model.</li>
+<li>Pedro Santos, Marco Consolaro, Alessandro Di Gioia, <a href="https://leanpub.com/agiletechnicalpracticesdistilled">Agile Technical Practices Distilled</a>. The legacy-code chapters.</li>
+</ul>
+<p class="aside">How this was written: I used AI heavily to draft, edit, and polish this article. The ideas are mine, and so is the responsibility for every word. <a href="how-i-write.html">Why I am unapologetic about it.</a></p>
+
+  <div class="cta">
+    <p>Want help taking your codebase there?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>
