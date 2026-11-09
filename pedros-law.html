@@ -198,6 +198,11 @@
   <blockquote><p>Engineers spend less time directing individual code changes and more time designing the specifications, constraints, evaluation mechanisms, and agent workflows that produce reliable code.</p></blockquote>
   <p>Put shortly: engineers move from <em>in</em> the loop to <em>on</em> the loop.</p>
   <p>
+    How far they can move is not set by the model. Agents already generate more code than any team can check.
+    What sets the limit is how much of that code the repository and the runtime can verify without a person:
+    <strong>autonomy is bounded by verification capacity, not by generation capacity.</strong> Everything in this law raises that capacity.
+  </p>
+  <p>
     <em>In</em> the loop, a person approves each change before it merges. <em>On</em> the loop, the agent runs the full
     workflow end to end, and people supervise the system that approves the changes: they own the specification, the
     checks, and the gates, and they step in where the risk is high. <em>Out</em> of the loop, nobody reads the code.
