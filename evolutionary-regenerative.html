@@ -227,7 +227,7 @@
 <p>Both toolkits are needed. They compose naturally.</p>
 <hr>
 <h2 id="what-this-means-in-practice">What This Means in Practice</h2>
-<p>For practitioners reading this today (for the delivery side of the same idea, see <a href="l3-law.html">Pedro's L3 Law</a>):</p>
+<p>For practitioners reading this today (for the delivery side of the same idea, see <a href="pedros-law.html">Pedro's Law</a>):</p>
 <p><strong>Your bounded context boundaries are your most important design decision.</strong> They determine what can be regenerated independently. Wrong boundaries mean coordinated regeneration — the distributed systems overhead problem reappears at the specification layer.</p>
 <p><strong>Invest in durable evaluations.</strong> Contract tests, property tests, invariants, and end-to-end behavioral checks that verify obligations at boundaries. These survive reimplementation. Unit tests that depend on the current implementation do not. As AI assistance increases, the ratio of durable to ephemeral evaluations in your codebase should shift.</p>
 <p><strong>Write ADRs for the reasons, not the decisions.</strong> The decision is recoverable from code. The reason — the constraint that ruled out the alternatives, the trade-off that shaped the choice — is not. That's the provenance worth preserving.</p>
