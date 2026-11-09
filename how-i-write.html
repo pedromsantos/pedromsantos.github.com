@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I Write With AI · Pedro Santos</title>
+<meta name="description" content="I use AI heavily to draft, edit, and polish what I publish. The ideas are mine, and so is the responsibility. Why I am unapologetic about it.">
+<meta property="og:title" content="How I Write With AI">
+<meta property="og:description" content="If AI is good enough to write the code I put my name to, it is good enough to help me write about it.">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://github.com/pedromsantos.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@pedromsantos">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='ui-monospace,monospace' font-size='15' font-weight='700' fill='%23fff' text-anchor='middle'%3Eps%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "datePublished": "2026-11-09",
+  "headline": "How I Write With AI",
+  "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] }
+}
+</script>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: rgb(28 25 23 / 0.1);
+    --border-strong: rgb(28 25 23 / 0.2);
+    --text: #1c1917;
+    --muted: #57534e;
+    --faint: #78716c;
+    --accent: #0f766e;
+    --accent-2: #b45309;
+    --tint: rgb(15 118 110 / 0.08);
+    --code-bg: #f0ede6;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110f;
+      --card: #1b1a17;
+      --border: rgb(255 255 255 / 0.08);
+      --border-strong: rgb(255 255 255 / 0.18);
+      --text: #f5f5f4;
+      --muted: #a8a29e;
+      --faint: #8f8a84;
+      --accent: #2dd4bf;
+      --accent-2: #fbbf24;
+      --tint: rgb(45 212 191 / 0.1);
+      --code-bg: #1f1d1a;
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 1.0625rem; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 0.375rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 100; padding: 0.5rem 1rem; background: var(--card); }
+
+  .nav {
+    position: fixed; inset: 0 0 auto; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; height: 3.75rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; color: var(--text); text-decoration: none; font-weight: 700; }
+  .brand img { width: 1.75rem; height: 1.75rem; border-radius: 50%; }
+  .nav .back { font-family: var(--mono); font-size: 0.8125rem; color: var(--muted); text-decoration: none; padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .nav .back:hover { color: var(--text); background: var(--tint); }
+
+  article { width: min(44rem, 100% - 2rem); margin: 0 auto; padding: 8rem 0 4rem; }
+  .wide { width: min(64rem, calc(100vw - 2rem)); margin-left: 50%; transform: translateX(-50%); }
+  .eyebrow { font-family: var(--mono); font-size: 0.8125rem; color: var(--accent-2); margin: 0 0 0.75rem; }
+  h1, h2, h3 { line-height: 1.15; text-wrap: balance; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(2.3rem, 6vw, 3.6rem); letter-spacing: -0.015em; margin: 0; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; margin: 3.25rem 0 0.75rem; }
+  h3 { font-size: 1.15rem; margin: 2rem 0 0.5rem; }
+  p, li { text-wrap: pretty; }
+  .byline { margin: 1.25rem 0 0; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  .law {
+    margin: 2.25rem 0; padding: 1.5rem 1.75rem; border-radius: 1rem;
+    background: var(--tint); border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    font-family: var(--serif); font-size: 1.4rem; line-height: 1.4;
+  }
+  .law p { margin: 0; }
+  .law p + p { margin-top: 0.6rem; }
+  .aside { color: var(--muted); font-style: italic; }
+  blockquote {
+    margin: 1.5rem 0; padding: 0.25rem 0 0.25rem 1.25rem; border-left: 3px solid var(--accent-2);
+    font-family: var(--serif); font-size: 1.3rem; line-height: 1.4;
+  }
+  blockquote p { margin: 0; }
+  ul, ol { padding-left: 1.3rem; }
+  li { margin: 0.25rem 0; }
+  li::marker { color: var(--faint); }
+  dl { margin: 1rem 0; }
+  dt { font-weight: 600; margin-top: 0.75rem; }
+  dd { margin: 0.15rem 0 0; color: var(--muted); }
+  code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 0.3em; }
+  pre { font-family: var(--mono); font-size: 0.85rem; line-height: 1.6; background: var(--code-bg); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .keyword { font-family: var(--mono); font-size: 0.85em; font-weight: 600; }
+  .table-wrap { overflow-x: auto; margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 36rem; font-size: 0.95rem; }
+  th, td { text-align: left; vertical-align: top; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  td ul { margin: 0; padding-left: 1.1rem; }
+  td strong { white-space: nowrap; }
+  .example { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .example h3 { margin-top: 0; }
+  .example dl { margin: 0; }
+  figure { margin: 2rem 0; }
+  figure .frame { overflow-x: auto; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); padding: 1rem; }
+  figure img { display: block; width: 100%; min-width: 44rem; height: auto; border-radius: 0.5rem; }
+  figcaption { margin-top: 0.75rem; font-size: 0.9rem; color: var(--muted); }
+  .pyramid svg { display: block; width: 100%; min-width: 44rem; height: auto; }
+  .pyramid .h { fill: #b45309; }
+  .pyramid .a { fill: #0f766e; }
+  .pyramid .in { fill: #ffffff; }
+  .pyramid .tag { letter-spacing: 0.08em; opacity: 0.9; }
+  .pyramid .job { fill: var(--muted); }
+  .pyramid .lead { stroke: var(--faint); }
+  .takeaway { margin-top: 3.5rem; text-align: center; }
+  .takeaway .law { text-align: left; }
+  .resources li { margin: 0.5rem 0; }
+  .toc { margin: 2.5rem 0 0; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .toc ol { margin: 0; padding-left: 1.3rem; columns: 2 16rem; column-gap: 2rem; font-size: 0.95rem; }
+  .toc li { break-inside: avoid; margin: 0.15rem 0; }
+  .cta { margin-top: 3.5rem; padding: 1.75rem; border-radius: 1rem; border: 1px solid var(--border); background: var(--card); text-align: center; }
+  .cta p { margin: 0 0 1rem; color: var(--muted); }
+  .btn {
+    display: inline-flex; align-items: center; padding: 0.7rem 1.2rem; border-radius: 999px; font-weight: 600;
+    font-size: 0.95rem; text-decoration: none; background: var(--text); color: var(--bg);
+  }
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--border); }
+  footer .bar { width: min(68rem, 100% - 2rem); margin-inline: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-family: var(--mono); font-size: 0.8125rem; color: var(--faint); }
+  footer p { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  .epigraph { margin: 2rem 0 0; }
+  .epigraph blockquote { font-size: 1.15rem; }
+  .ladder { margin: 1.5rem 0; }
+  .ladder figcaption { margin-top: 0.5rem; }
+  .epigraph .attrib { font-family: var(--sans); font-size: 0.9rem; color: var(--muted); }
+  hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="nav" aria-label="Main">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="https://github.com/pedromsantos.png?size=64" alt="" width="28" height="28">Pedro Santos</a>
+    <a class="back" href="index.html">← home</a>
+  </div>
+</nav>
+
+<main id="main">
+<article>
+  <p class="eyebrow">note · how this site is written</p>
+  <h1>How I Write With AI</h1>
+  <p class="byline">By Pedro Santos · November 2026 · 2 min read</p>
+
+  <p><strong>I use AI heavily to write what I publish here.</strong> It drafts, it edits, it tightens, it polishes, it checks my sources and argues with my structure. Most sentences on this site went through an AI model at least once, and many started there.</p>
+
+  <p>Two things never come from the model.</p>
+  <ul>
+    <li><strong>The ideas are 100% mine.</strong> The arguments, the positions, the experience they come from, and the decision about what is worth saying. The model does not get to decide what I think.</li>
+    <li><strong>The responsibility is 100% mine.</strong> I read every piece before it ships, I check every claim and every number against its source, and if something here is wrong, it is my mistake, not the tool's.</li>
+  </ul>
+
+  <h2 id="unapologetic">Why I am unapologetic about it</h2>
+  <p>Most of what I write is about teams letting AI agents write their code, safely. If AI is good enough to write the code I put my name to, it is good enough to help me write about it. Hiding it would be the strange choice.</p>
+  <p>The standard is the same in both cases. The tool can produce as much as it likes. What makes the result trustworthy is a person who decides what it should say, checks what it does say, and answers for it afterwards. That is the whole argument of <a href="l3-law.html">Pedro's L3 Law</a>, applied to prose: many prompts to shape it, and my approval before it ships.</p>
+  <p>If you find a mistake, tell me. It is mine to fix.</p>
+
+  <div class="cta">
+    <p>Want to bring this way of working to your teams?</p>
+    <a class="btn" href="index.html#contact">Let's talk</a>
+  </div>
+</article>
+</main>
+
+<footer>
+  <div class="bar">
+    <p>© Pedro Moreira Santos · Madrid, Spain</p>
+    <p><a href="index.html">← back to home</a></p>
+  </div>
+</footer>
+</body>
+</html>
