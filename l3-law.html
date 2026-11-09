@@ -19,7 +19,7 @@
   "headline": "Pedro's L3 Law: Specifications First, Code Second",
   "author": { "@type": "Person", "name": "Pedro Moreira Santos", "sameAs": ["https://www.linkedin.com/in/pedros/", "https://github.com/pedromsantos"] },
   "datePublished": "2026-10-22",
-  "dateModified": "2026-11-06",
+  "dateModified": "2026-11-09",
   "image": "images/pedros-law-two-loops.svg"
 }
 </script>
@@ -169,7 +169,7 @@
 <article>
   <p class="eyebrow">article · agentic engineering</p>
   <h1>Pedro's L3 Law: Specifications First, Code Second</h1>
-  <p class="byline">By Pedro Santos · October 2026 · 15 min read · <a href="talks/l3-law-scbcn-2026/">slides from the Software Crafters Barcelona open space</a></p>
+  <p class="byline">By Pedro Santos · October 2026 · 15 min read · <a href="talks/l3-law-scbcn-2026/">slides from the Software Crafters Barcelona talk</a></p>
 
   <div class="law">
     <p>Use as many rich, iterative prompts as you need to create the specifications.</p>
@@ -205,6 +205,7 @@
   <nav class="toc" aria-label="In this article">
     <p class="eyebrow">in this article</p>
     <ol>
+      <li><a href="#levels">Which Level 3? A note on the numbering</a></li>
       <li><a href="#normative-language">Normative language</a></li>
       <li><a href="#the-law">The law</a></li>
       <li><a href="#risk-tiers">Risk tiers</a></li>
@@ -227,6 +228,70 @@
       <li><a href="#resources">Resources</a></li>
     </ol>
   </nav>
+
+  <h2 id="levels">Which Level 3? A note on the numbering</h2>
+  <p>
+    There is no industry-standard ladder for how much of the work an agent does, and the published ones number
+    their levels differently. DORA, the closest thing the industry has to a shared reference for delivery
+    performance, defines capabilities that make AI pay off, and calls AI an amplifier, but defines no levels.
+    So "Level 3" means different things in different places, and on the most widely shared ladder it means
+    almost the opposite of what it means here.
+  </p>
+  <p>
+    The shape is easier to agree on than the number. At the level this law governs, engineers move from being
+    <em>in</em> the loop, approving each change before it merges, to being <em>on</em> the loop: they own the
+    specification, the checks, and the gates, supervise the stream of changes, and step in where the risk
+    is high.
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Ladder</th><th>Its levels</th><th>What its Level 3 means</th><th>Where this law's L3 sits</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://alejtraws.github.io/agentic-engineering-framework/adopt/maturity-path.html">Agentic Engineering Framework</a></td>
+          <td>L1 Assisted, L2 Supervised, L3 Autonomous, L4 Autonomous Software Engineering</td>
+          <td>The agent plans, builds, tests, reviews, and ships. A human reviews every pull request.</td>
+          <td>This law's numbering. Its L3 adds risk tiers, so a human reviews the changes that need it, not every one.</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/">Dan Shapiro, The Five Levels</a></td>
+          <td>0 to 5, modelled on driving automation; Level 5 is the "dark factory"</td>
+          <td>The agent writes, the human reviews every diff. "Your life is diffs."</td>
+          <td>Level 4: you write and argue the specification, and review plans and test results, not code.</td>
+        </tr>
+        <tr>
+          <td><a href="https://addyosmani.com/blog/agentic-autonomy-levels/">Addy Osmani, Agentic Autonomy Levels</a></td>
+          <td>0 to 5, on two axes: agency and orchestration</td>
+          <td>A setting per task, not a level for a team</td>
+          <td>Varies by task, which is how risk tiers work here.</td>
+        </tr>
+        <tr>
+          <td><a href="https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04">Steve Yegge, Welcome to Gas Town</a></td>
+          <td>8 stages; the first four in the IDE, the last four with agents</td>
+          <td>Still inside the IDE</td>
+          <td>Around stages 5 and 6.</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.thoughtworks.com/radar">Thoughtworks Technology Radar</a></td>
+          <td>No levels. Harnesses, feedforward and feedback controls, and "human on the loop"</td>
+          <td>Not applicable</td>
+          <td>"Human on the loop" describes it directly.</td>
+        </tr>
+        <tr>
+          <td><a href="https://dora.dev/ai/capabilities-model/report">DORA AI Capabilities Model</a></td>
+          <td>No levels. Seven capabilities that amplify AI's effect</td>
+          <td>Not applicable</td>
+          <td>The capabilities are preconditions, not a level.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    I keep the name L3 because the law was built on the Agentic Engineering Framework's path. If you know
+    Shapiro's ladder, read it as his Level 4. The number matters less than who is in the loop.
+  </p>
 
   <h2 id="normative-language">Normative language</h2>
   <p>
@@ -758,6 +823,10 @@ Evaluation: &lt;link to evaluation report&gt;</code></pre>
     <li><a href="https://lexler.github.io/augmented-coding-patterns/">Augmented Coding Patterns</a></li>
     <li><a href="https://aicoding.leaflet.pub/">The Phoenix Architecture</a>, Chad Fowler</li>
     <li><a href="https://alejtraws.github.io/agentic-engineering-framework/adopt/maturity-path.html">Maturity path (L1–L4)</a>, Agentic Engineering Framework</li>
+    <li><a href="https://www.danshapiro.com/blog/2026/01/the-five-levels-from-spicy-autocomplete-to-the-software-factory/">The Five Levels: from Spicy Autocomplete to the Dark Factory</a>, Dan Shapiro</li>
+    <li><a href="https://addyosmani.com/blog/agentic-autonomy-levels/">Agentic Autonomy Levels</a>, Addy Osmani</li>
+    <li><a href="https://www.thoughtworks.com/insights/blog/generative-ai/cybernetics-and-human-on-the-loop-in-agentic-coding">Cybernetics and human-on-the-loop in agentic coding</a>, Thoughtworks</li>
+    <li><a href="https://dora.dev/ai/capabilities-model/report">DORA AI Capabilities Model</a>, DORA</li>
     <li><a href="https://opensource.googleblog.com/2026/10/introducing-elephant-goldfish-model-plugin.html">Introducing the Elephant-Goldfish Model plugin</a>, Google Open Source Blog</li>
     <li><a href="https://academy.claude.com/courses/ai-native-sdlc-playbook/introduction">What changes and where to start · The AI-native SDLC playbook</a>, Claude Academy</li>
   </ul>
